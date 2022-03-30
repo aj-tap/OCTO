@@ -91,6 +91,7 @@ class TrafficBot:
         colors = np.random.randint(0, 255, size=(200, 3), dtype="uint8")
         return colors
 
-
+    def runBot(self):
+        pass
   ####################################################################
 
