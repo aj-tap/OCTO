@@ -43,11 +43,12 @@ class TrafficBot:
 
 
         # initialize the video stream, pointer to output video file, and frame dimensions
+        print("[INFO] Loading the input video")
         self.vs = cv2.VideoCapture(inputFile)
         self.writer = None
         (self.W, self.H) = (None, None)
         self.frameIndex = 0
-
+        print("[INFO] video input was sucessfully loaded")
         ###  line = [(179, 442), (1404, 436)]
         ### line = setLine()
 
