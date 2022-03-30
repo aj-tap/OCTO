@@ -24,13 +24,14 @@ class TrafficBot:
 
         # paths to the YOLO weights, model configuration and coco class labels
         self.weightPath = os.path.sep.join([yoloDir, "yolov4.weights"])
-        self.configPath = os.path.sep.join([yoloDir, "yolov4.weights"])
+        self.configPath = os.path.sep.join([yoloDir, "yolov4.cfg"])
         
         self.labelsPath = os.path.sep.join([yoloDir, "coco.names"])
-        self.LABELS = open(labelsPath).read().strip().split("\n")
+        self.LABELS = open(self.labelsPath).read().strip().split("\n")
 
         # YOLO object detector trained on COCO dataset 
-        net = cv2.dnn.readNetFromDarknet(configPath, weightsPath)
+        print("[INFO] loading YOLO from disk...")
+        net = cv2.dnn.readNetFromDarknet(self.configPath, self.weightPath)
         # If nvidia is available
         net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
         net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
@@ -38,6 +39,7 @@ class TrafficBot:
         # and determine only the *output* layer names that we need from YOLO
         ln = net.getLayerNames()
         ln = [ln[i - 1] for i in net.getUnconnectedOutLayers()]
+        print("[INFO] YOLO  was loaded from disk")
 
 
         # initialize the video stream, pointer to output video file, and frame dimensions
