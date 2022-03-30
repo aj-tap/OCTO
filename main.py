@@ -1,12 +1,8 @@
-import numpy as np
-import argparse
-import imutils
-import time
-import cv2
-import os
-import glob
+from traffic_bot import *
 
 
+sample = TrafficBot(yolo-coco-V4, None)
+sample.vidFrameChecker()
 
 # Add GUI here 
 # Driver code
