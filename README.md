@@ -1,5 +1,4 @@
-# traffic-bot-counter
-test
+# traffic-bot-counters
  
 > Linux 
 #### setup virtual enviroment then activate it
