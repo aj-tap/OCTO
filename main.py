@@ -3,7 +3,8 @@ from traffic_bot import *
 #from tkinter import font as tkfont
 
 sample = TrafficBot("yolo-coco-V4", "input.mp4")
-sample.vidFrameChecker()
+
+sample.vidFrameChecker() ## will return vidframe void. 
 
 # Add GUI here 
 #class Menu: (i/o)
@@ -12,6 +13,3 @@ sample.vidFrameChecker()
 
 # Driver code
 #if __name__ == "__main__":
-
-
-
