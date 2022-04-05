@@ -68,7 +68,7 @@ class TrafficBot:
         return ccw(A,C,D) != ccw(B,C,D) and ccw(A,B,C) != ccw(A,B,D)
 
     def ccw(self, A,B,C):
-	    return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
+        return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
 
 
     def vidFrameChecker(self):
@@ -79,13 +79,13 @@ class TrafficBot:
         """
         try:
             prop = cv2.cv.CV_CAP_PROP_FRAME_COUNT if imutils.is_cv2() \
-		        else cv2.CAP_PROP_FRAME_COUNT
+                else cv2.CAP_PROP_FRAME_COUNT
             total = int(self.vs.get(prop))
             print("[INFO] {} total frames in video".format(total))
         except:
-	        print("[INFO] could not determine # of frames in video")
-	        print("[INFO] no approx. completion time can be provided")
-	        total = -1
+            print("[INFO] could not determine # of frames in video")
+            print("[INFO] no approx. completion time can be provided")
+            total = -1
 
     def generateColor(self):
         """
@@ -120,36 +120,36 @@ class TrafficBot:
             classIDs = []
 
             for output in layerOutputs:
-            		# loop over each of the detections
-            		for detection in output:
-            			# extract the class ID and confidence (i.e., probability)
-            			# of the current object detection
-            			scores = detection[5:]
-            			classID = np.argmax(scores)
-            			confidence = scores[classID]
+                    # loop over each of the detections
+                    for detection in output:
+                        # extract the class ID and confidence (i.e., probability)
+                        # of the current object detection
+                        scores = detection[5:]
+                        classID = np.argmax(scores)
+                        confidence = scores[classID]
 
-            			# filter out weak predictions by ensuring the detected
-            			# probability is greater than the minimum probability
-            			if confidence > args["confidence"]:
-            				# scale the bounding box coordinates back relative to
-            				# the size of the image, keeping in mind that YOLO
-            				# actually returns the center (x, y)-coordinates of
-            				# the bounding box followed by the boxes' width and
-            				# height
-            				box = detection[0:4] * np.array([W, H, W, H])
-            				(centerX, centerY, width, height) = box.astype("int")
+                        # filter out weak predictions by ensuring the detected
+                        # probability is greater than the minimum probability
+                        if confidence > args["confidence"]:
+                            # scale the bounding box coordinates back relative to
+                            # the size of the image, keeping in mind that YOLO
+                            # actually returns the center (x, y)-coordinates of
+                            # the bounding box followed by the boxes' width and
+                            # height
+                            box = detection[0:4] * np.array([W, H, W, H])
+                            (centerX, centerY, width, height) = box.astype("int")
 
-            				# use the center (x, y)-coordinates to derive the top
-            				# and and left corner of the bounding box
-            				x = int(centerX - (width / 2))
-            				y = int(centerY - (height / 2))
+                            # use the center (x, y)-coordinates to derive the top
+                            # and and left corner of the bounding box
+                            x = int(centerX - (width / 2))
+                            y = int(centerY - (height / 2))
 
-            				# update our list of bounding box coordinates,
-            				# confidences, and class IDs
-            				boxes.append([x, y, int(width), int(height)])
-            				confidences.append(float(confidence))
-            				classIDs.append(classID)
+                            # update our list of bounding box coordinates,
+                            # confidences, and class IDs
+                            boxes.append([x, y, int(width), int(height)])
+                            confidences.append(float(confidence))
+                            classIDs.append(classID)
 
-            	# apply non-maxima suppression to suppress weak, overlapping
-            	# bounding boxes
+                # apply non-maxima suppression to suppress weak, overlapping
+                # bounding boxes
                 idxs = cv2.dnn.NMSBoxes(boxes, confidences, args["confidence"], args["threshold"])

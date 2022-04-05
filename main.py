@@ -1,15 +1,17 @@
-from traffic_bot import *
-#import tkinter as tk
-#from tkinter import font as tkfont
+# from traffic_bot import *
+from gui_menu import GuiMenu
 
-sample = TrafficBot("yolo-coco-V4", "input.mp4")
 
-sample.vidFrameChecker() ## will return vidframe void. 
+# import tkinter as tk
+# from tkinter import font as tkfont
 
-# Add GUI here 
-#class Menu: (i/o)
-#class WindowAOI:
+# sample = TrafficBot("yolo-coco-V4", "input.mp4")
 
+# sample.vidFrameChecker()  ## will return vidframe void.
+
+# Add GUI here
+test = GuiMenu()
 
 # Driver code
-#if __name__ == "__main__":
+if __name__ == "__main__":
+    test.__init__()
