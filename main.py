@@ -14,4 +14,4 @@ test = GuiMenu()
 
 # Driver code
 if __name__ == "__main__":
-    test.__init__()
+    test
