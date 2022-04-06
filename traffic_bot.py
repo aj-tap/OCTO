@@ -11,7 +11,7 @@ from sort import *
 
 class TrafficBot:
 
-    def __init__(self, yoloDir, inputFile):
+    def __init__(self, yoloDir, inputFile, confidencelvl=0.5, threshold=0.3):
 
         # Sort 
         self.tracker = Sort()
@@ -20,6 +20,11 @@ class TrafficBot:
 
         # input footage
         # self.inputFile = inputFile ### Dups remove it
+
+        # Confidence Level 
+        self.confidencelvl = float(confidencelvl)
+        # Threshold level 
+        self.threshold = float(threshold) ## 
 
         # paths to the YOLO weights, model configuration and coco class labels
         self.weightPath = os.path.sep.join([yoloDir, "yolov4.weights"])
@@ -51,10 +56,6 @@ class TrafficBot:
         ###  line = [(179, 442), (1404, 436)]
         ### line = setLine()
 
-<<<<<<< Updated upstream
-=======
-        
->>>>>>> Stashed changes
     def setLine(self):
         """
         set the intersection line or area of interest.  
@@ -110,15 +111,20 @@ class TrafficBot:
             blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (416, 416),
                                          swapRB=True, crop=False)
 
-            # pass of the YOLO object detector, giving us our bounding boxes # and associated probabilities
+            # Pass of the YOLO object detector, giving us our bounding boxes # and associated probabilities
             net.setInput(blob)
+            #### Starts the time (loging)
             start = time.time()
-            layerOutputs = net.forward(ln)
+            layerOutputs = net.forward(ln) ###  Layer Outputs
+            #### Ends the time (Loging)
             end = time.time()
+
+            # Initialize our lists of detected bounding boxes, confidences, and Class IDs
             boxes = []
             confidences = []
             classIDs = []
 
+            # loop over each of the layer outputs
             for output in layerOutputs:
                 # loop over each of the detections
                 for detection in output:
@@ -130,7 +136,7 @@ class TrafficBot:
 
                     # filter out weak predictions by ensuring the detected
                     # probability is greater than the minimum probability
-                    if confidence > args["confidence"]:
+                    if confidence > self.confidencelvl: 
                         # scale the bounding box coordinates back relative to
                         # the size of the image, keeping in mind that YOLO
                         # actually returns the center (x, y)-coordinates of
@@ -152,4 +158,16 @@ class TrafficBot:
 
             # apply non-maxima suppression to suppress weak, overlapping
             # bounding boxes
-        idxs = cv2.dnn.NMSBoxes(boxes, confidences, args["confidence"], args["threshold"])
+            idxs = cv2.dnn.NMSBoxes(boxes, confidences, self.confidencelvl, self.threshold)
+            dets = []
+            if len(idxs) > 0:
+		    # loop over the indexes we are keeping
+             for i in idxs.flatten():
+                (x, y) = (boxes[i][0], boxes[i][1])
+                (w, h) = (boxes[i][2], boxes[i][3])
+                dets.append([x, y, x+w, y+h, confidences[i]])
+            
+            np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
+            dets = np.asarray(dets)
+            tracks = tracker.update(dets)
+
