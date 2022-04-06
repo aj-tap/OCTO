@@ -11,12 +11,12 @@ class GuiMenu(tk.Tk):
 
     def __init__(self):
         super().__init__()
-
+        self.geometry('500x500')
         self.wm_iconbitmap('./assets/traffic.ico')
         self.title('traffic-bot-counter')
 
         container = tk.Frame(self)
-        container.pack(fill="both", expand=True, padx=150, pady=5)
+        container.pack(fill="both", padx=150, pady=5)
 
         label = tk.Label(self, text="This is the start page")
         label.pack()
