@@ -5,14 +5,14 @@ from gui_menu import GuiMenu
 # import tkinter as tk
 # from tkinter import font as tkfont
 
-# sample = TrafficBot("yolo-coco-V4", "input.mp4")
+sample = TrafficBot("yolo-coco-V4", "input.mp4")
 
-# sample.vidFrameChecker()  ## will return vidframe void.
-
+sample.vidFrameChecker()  ## will return vidframe void.
+sample.runBot()
 # Add GUI here
-test = GuiMenu()
+#test = GuiMenu()
 
 # Driver code
-if __name__ == "__main__":
-    test
+#if __name__ == "__main__":
+ #   test
 
