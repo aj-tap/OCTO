@@ -1,5 +1,5 @@
 from traffic_bot import *
-from gui_menu import GuiMenu
+#from gui_menu import GuiMenu
 
 
 # import tkinter as tk
