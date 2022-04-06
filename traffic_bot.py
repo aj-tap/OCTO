@@ -24,7 +24,7 @@ class TrafficBot:
         # Confidence Level 
         self.confidencelvl = float(confidencelvl)
         # Threshold level 
-        self.threshold = float(threshold) ## 
+        self.threshold = float(threshold)  ##
 
         # paths to the YOLO weights, model configuration and coco class labels
         self.weightPath = os.path.sep.join([yoloDir, "yolov4.weights"])
@@ -115,7 +115,7 @@ class TrafficBot:
             net.setInput(blob)
             #### Starts the time (loging)
             start = time.time()
-            layerOutputs = net.forward(ln) ###  Layer Outputs
+            layerOutputs = net.forward(ln)  ###  Layer Outputs
             #### Ends the time (Loging)
             end = time.time()
 
@@ -136,7 +136,7 @@ class TrafficBot:
 
                     # filter out weak predictions by ensuring the detected
                     # probability is greater than the minimum probability
-                    if confidence > self.confidencelvl: 
+                    if confidence > self.confidencelvl:
                         # scale the bounding box coordinates back relative to
                         # the size of the image, keeping in mind that YOLO
                         # actually returns the center (x, y)-coordinates of
@@ -161,12 +161,12 @@ class TrafficBot:
             idxs = cv2.dnn.NMSBoxes(boxes, confidences, self.confidencelvl, self.threshold)
             dets = []
             if len(idxs) > 0:
-		    # loop over the indexes we are keeping
-             for i in idxs.flatten():
-                (x, y) = (boxes[i][0], boxes[i][1])
-                (w, h) = (boxes[i][2], boxes[i][3])
-                dets.append([x, y, x+w, y+h, confidences[i]])
-            
+                # loop over the indexes we are keeping
+                for i in idxs.flatten():
+                    (x, y) = (boxes[i][0], boxes[i][1])
+                    (w, h) = (boxes[i][2], boxes[i][3])
+                    dets.append([x, y, x + w, y + h, confidences[i]])
+
             np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
             dets = np.asarray(dets)
             tracks = tracker.update(dets)
@@ -180,84 +180,82 @@ class TrafficBot:
                 boxes.append([track[0], track[1], track[2], track[3]])
                 indexIDs.append(int(track[4]))
                 memory[indexIDs[-1]] = boxes[-1]
-            
+
             if len(boxes) > 0:
                 i = int(0)
                 for box in boxes:
-                    #extract the bounding box coordinates
-			        (x, y) = (int(box[0]), int(box[1]))
-			        (w, h) = (int(box[2]), int(box[3]))
-			    # draw a bounding box rectangle and label on the image
-			    # color = [int(c) for c in COLORS[classIDs[i]]]
-			    # cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-			        color = [int(c) for c in COLORS[indexIDs[i] % len(COLORS)]]
-			        cv2.rectangle(frame, (x, y), (w, h), color, 2)
+                    # extract the bounding box coordinates
+                    (x, y) = (int(box[0]), int(box[1]))
+                    (w, h) = (int(box[2]), int(box[3]))
+                    # draw a bounding box rectangle and label on the image
+                    # color = [int(c) for c in COLORS[classIDs[i]]]
+                    # cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
+                    color = [int(c) for c in COLORS[indexIDs[i] % len(COLORS)]]
+                    cv2.rectangle(frame, (x, y), (w, h), color, 2)
                     if indexIDs[i] in previous:
                         previous_box = previous[indexIDs[i]]
                         (x2, y2) = (int(previous_box[0]), int(previous_box[1]))
                         (w2, h2) = (int(previous_box[2]), int(previous_box[3]))
-                        p0 = (int(x + (w-x)/2), int(y + (h-y)/2))
-                        p1 = (int(x2 + (w2-x2)/2), int(y2 + (h2-y2)/2))
+                        p0 = (int(x + (w - x) / 2), int(y + (h - y) / 2))
+                        p1 = (int(x2 + (w2 - x2) / 2), int(y2 + (h2 - y2) / 2))
                         cv2.line(frame, p0, p1, color, 3)
 
                         if intersect(p0, p1, line[0], line[1]):
-					        counter += 1
-					        print("[INFO] Frame {} object id {}:{} passed the line coord = {}".format(frameIndex,indexIDs[i],LABELS[classIDs[i]], previous_box))								
-					        print("\n")
-					        temp = []
-					        #['FRAME','INDEX','TYPE','CFLVL']
-					        temp = { 'FRAME':frameIndex,'INDEX':indexIDs[i],'TYPE':LABELS[classIDs[i]], 'CFLVL':confidences[i] }
-					
-					    with open(filename, 'a', newline='') as csvfile:
-						    dictwriter_obj = DictWriter(csvfile, fieldnames=headercsv)
-						    dictwriter_obj.writerow(temp)
-						    csvfile.close()
+                            counter += 1
+                            print("[INFO] Frame {} object id {}:{} passed the line coord = {}".format(frameIndex,
+                                                                                                      indexIDs[i],
+                                                                                                      LABELS[
+                                                                                                          classIDs[i]],
+                                                                                                      previous_box))
+                            print("\n")
+                            temp = []
+                            # ['FRAME','INDEX','TYPE','CFLVL']
+                            temp = {'FRAME': frameIndex, 'INDEX': indexIDs[i], 'TYPE': LABELS[classIDs[i]],
+                                    'CFLVL': confidences[i]}
 
-                #text = "{}: {:.4f}".format(LABELS[classIDs[i]], confidences[i])
-			    #text = "{}".format(indexIDs[i])
-			    text = "{}={}: {:.4f}".format(indexIDs[i], LABELS[classIDs[i]], confidences[i])
-			    #print("object id registered{}={}: {:.4f} \n".format(indexIDs[i], LABELS[classIDs[i]], confidences[i]))
-			    cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-			    i += 1
+                        with open(filename, 'a', newline='') as csvfile:
+                            dictwriter_obj = DictWriter(csvfile, fieldnames=headercsv)
+                            dictwriter_obj.writerow(temp)
+                            csvfile.close()
+
+                # text = "{}: {:.4f}".format(LABELS[classIDs[i]], confidences[i])
+                # text = "{}".format(indexIDs[i])
+                text = "{}={}: {:.4f}".format(indexIDs[i], LABELS[classIDs[i]], confidences[i])
+                # print("object id registered{}={}: {:.4f} \n".format(indexIDs[i], LABELS[classIDs[i]], confidences[i]))
+                cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                i += 1
 
             # draw line
             cv2.line(frame, line[0], line[1], (0, 255, 255), 5)
-            cv2.putText(frame, str(counter), (100,200), cv2.FONT_HERSHEY_DUPLEX, 5.0, (0, 255, 255), 10)
+            cv2.putText(frame, str(counter), (100, 200), cv2.FONT_HERSHEY_DUPLEX, 5.0, (0, 255, 255), 10)
             cv2.imwrite("output/frame-{}.png".format(frameIndex), frame)
             if writer is None:
-		        # initialize our video writer
-		        fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-		        writer = cv2.VideoWriter(args["output"], fourcc, 30,
-		        	(frame.shape[1], frame.shape[0]), True)
+                # initialize our video writer
+                fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+                writer = cv2.VideoWriter(args["output"], fourcc, 30,
+                                         (frame.shape[1], frame.shape[0]), True)
 
-		        # some information on processing single frame
-		        if total > 0:
-		        	elap = (end - start)
-		        	print("[INFO] single frame took {:.4f} seconds".format(elap))
-		        	print("[INFO] estimated total time to finish: {:.4f}".format(
-		        		elap * total))
+                # some information on processing single frame
+                if total > 0:
+                    elap = (end - start)
+                    print("[INFO] single frame took {:.4f} seconds".format(elap))
+                    print("[INFO] estimated total time to finish: {:.4f}".format(
+                        elap * total))
 
             writer.write(frame)
             frameIndex += 1
-            if (frameIndex % 1000) == 0 :
-		        print("[INFO] sleeping for 10 sec...")
-		        time.sleep(10)
-		        #vs.release()
-		        #exit()
-                    
+            if (frameIndex % 1000) == 0:
+                print("[INFO] sleeping for 10 sec...")
+                time.sleep(10)
+                # vs.release()
+                # exit()
+
         print("[INFO] cleaning up...")
         writer.release()
         vs.release()
 
-
-#print('Total objects been detected:', len(boxes))
-#print('Number of objects left after non-maximum suppression:', counter - 1)
-
+# print('Total objects been detected:', len(boxes))
+# print('Number of objects left after non-maximum suppression:', counter - 1)
 
 
-
-#test
-
-
-
-
+# test
