@@ -51,6 +51,10 @@ class TrafficBot:
         ###  line = [(179, 442), (1404, 436)]
         ### line = setLine()
 
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
     def setLine(self):
         """
         set the intersection line or area of interest.  
