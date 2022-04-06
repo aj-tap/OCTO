@@ -1,4 +1,4 @@
-# from traffic_bot import *
+from traffic_bot import *
 from gui_menu import GuiMenu
 
 
@@ -14,4 +14,5 @@ test = GuiMenu()
 
 # Driver code
 if __name__ == "__main__":
-    test.__init__()
+    test
+
