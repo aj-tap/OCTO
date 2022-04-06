@@ -1,5 +1,7 @@
 # https://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter
 
+from tkinter import filedialog
+
 try:
     import tkinter as tk  # python 3
     from tkinter import font as tkfont  # python 3
@@ -82,5 +84,13 @@ class PageTwo(tk.Frame):
         button.pack()
 
 
+
+
 app = GuiMenu()
+app.wm_iconbitmap('./assets/traffic.ico')
+app.title('traffic-bot-counter')
+
+app.filename = filedialog.askopenfilename(initialdir="/", title="Select file",
+                                          filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
+
 app.mainloop()

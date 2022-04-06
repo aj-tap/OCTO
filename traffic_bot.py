@@ -152,4 +152,4 @@ class TrafficBot:
 
                 # apply non-maxima suppression to suppress weak, overlapping
                 # bounding boxes
-                idxs = cv2.dnn.NMSBoxes(boxes, confidences, args["confidence"], args["threshold"])
+        idxs = cv2.dnn.NMSBoxes(boxes, confidences, args["confidence"], args["threshold"])
