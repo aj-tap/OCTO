@@ -75,9 +75,9 @@ class GuiMenu(tk.Tk):
             .grid(sticky='w', row=3, column=4)
 
         # SUBMIT BUTTON
-        tk.Button(self.container, text="START", command=lambda: print("RUN BOT!" +
+        tk.Button(self.container, bg='black', foreground='white', text="START", command=lambda: print("RUN BOT!" +
                                                                       "(also write user inputs to bot script)")) \
-            .grid(sticky='nsew', row=5, column=1, columnspan=2, padx=5, ipadx=10)
+            .grid(sticky='nsew', row=5, column=1, columnspan=1, padx=5)
 
     def gui_input_dir(self):
         app.input_filename = fd.askopenfilename(initialdir="/", title="Select file",
