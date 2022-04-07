@@ -5,7 +5,7 @@ from traffic_bot import *
 # import tkinter as tk
 # from tkinter import font as tkfont
 
-sample = TrafficBot("yolo-coco-V4", "input.mp4")
+sample = TrafficBot("yolo-coco-V4", "input.mp4", "output")
 
 sample.vidFrameChecker()  ## will return vidframe void.
 sample.runBot()
