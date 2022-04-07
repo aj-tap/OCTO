@@ -12,14 +12,13 @@ from sort import *
 class TrafficBot:
 
      # Sort 
-  
+    
 
     def __init__(self, yoloDir, inputFile, output, confidencelvl=0.5, threshold=0.3):
         # input footage
         # self.inputFile = inputFile ### Dups remove it
         self.tracker = Sort()
         self.memory = {}
-        self.counter = 0
     
 
         # Setup Colors directory
@@ -45,8 +44,8 @@ class TrafficBot:
         print("[INFO] loading YOLO from disk...")
         self.net = cv2.dnn.readNetFromDarknet(self.configPath, self.weightPath)
         # If nvidia is available
-        self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-        self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+        #self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+        #self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
         # and determine only the *output* layer names that we need from YOLO
         self.ln = self.net.getLayerNames()
@@ -63,7 +62,9 @@ class TrafficBot:
         print("[INFO] video input was sucessfully loaded")
         
         #temp 
-        self.line = [(179, 442), (1404, 436)]
+        self.line = [(210, 622), (1183, 582)]
+  
+
         ### line = setLine()
 
         #temp 
@@ -88,7 +89,7 @@ class TrafficBot:
         """
         Return true if line segments AB and CD intersect
         """
-        return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
+        return self.ccw(A, C, D) != self.ccw(B, C, D) and self.ccw(A, B, C) != self.ccw(A, B, D)
 
     def ccw(self, A, B, C):
         return (C[1] - A[1]) * (B[0] - A[0]) > (B[1] - A[1]) * (C[0] - A[0])
@@ -119,6 +120,9 @@ class TrafficBot:
         return colors
 
     def runBot(self):
+        
+       
+        counter = 0
         while True:
             ### Read the next frame 
             (grabbed, frame) = self.vs.read()
@@ -187,7 +191,7 @@ class TrafficBot:
                 for i in idxs.flatten():
                     (x, y) = (boxes[i][0], boxes[i][1])
                     (w, h) = (boxes[i][2], boxes[i][3])
-                    dets.append([x, y, x + w, y + h, confidences[i]])
+                    dets.append([x, y, x+w, y+h, confidences[i]])
 
             np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
             dets = np.asarray(dets)
@@ -196,12 +200,12 @@ class TrafficBot:
             boxes = []
             indexIDs = []
             c = []
-            previous = self.memory.copy()
-            memory = {}
+            self.previous = self.memory.copy()
+            self.memory = {}
             for track in tracks:
                 boxes.append([track[0], track[1], track[2], track[3]])
                 indexIDs.append(int(track[4]))
-                memory[indexIDs[-1]] = boxes[-1]
+                self.memory[indexIDs[-1]] = boxes[-1]
 
             if len(boxes) > 0:
                 i = int(0)
@@ -215,16 +219,16 @@ class TrafficBot:
                     #color = [int(c) for c in COLORS[indexIDs[i] % len(COLORS)]]
                     color = [int(c) for c in self.COLORS[indexIDs[i] % len(self.COLORS)]]
                     cv2.rectangle(frame, (x, y), (w, h), color, 2)
-                    if indexIDs[i] in previous:
-                        previous_box = previous[indexIDs[i]]
+                    if indexIDs[i] in self.previous:
+                        previous_box = self.previous[indexIDs[i]]
                         (x2, y2) = (int(previous_box[0]), int(previous_box[1]))
                         (w2, h2) = (int(previous_box[2]), int(previous_box[3]))
                         p0 = (int(x + (w - x) / 2), int(y + (h - y) / 2))
                         p1 = (int(x2 + (w2 - x2) / 2), int(y2 + (h2 - y2) / 2))
                         cv2.line(frame, p0, p1, color, 3)
 
-                        if intersect(p0, p1, self.line[0], self.line[1]):
-                            self.counter += 1
+                        if self.intersect(p0, p1, self.line[0], self.line[1]):
+                            counter += 1
                             print("[INFO] Frame {} object id {}:{} passed the line coord = {}".format(self.frameIndex,
                                                                                                       indexIDs[i],
                                                                                                       self.LABELS[
@@ -233,13 +237,13 @@ class TrafficBot:
                             print("\n")
                             temp = []
                             # ['FRAME','INDEX','TYPE','CFLVL']
-                            temp = {'FRAME': frameIndex, 'INDEX': indexIDs[i], 'TYPE': self.LABELS[classIDs[i]],
+                            temp = {'FRAME': self.frameIndex, 'INDEX': indexIDs[i], 'TYPE': self.LABELS[classIDs[i]],
                                     'CFLVL': confidences[i]}
-
-                        with open(filename, 'a', newline='') as csvfile:
-                            dictwriter_obj = DictWriter(csvfile, fieldnames=headercsv)
-                            dictwriter_obj.writerow(temp)
-                            csvfile.close()
+########### Writer 
+                        #with open(filename, 'a', newline='') as csvfile:
+                        #    dictwriter_obj = DictWriter(csvfile, fieldnames=headercsv)
+                        #    dictwriter_obj.writerow(temp)
+                        #    csvfile.close()
 
                 # text = "{}: {:.4f}".format(LABELS[classIDs[i]], confidences[i])
                 # text = "{}".format(indexIDs[i])
@@ -248,9 +252,12 @@ class TrafficBot:
                 cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
                 i += 1
 
-            # draw line
+            # Draw line
             cv2.line(frame, self.line[0], self.line[1], (0, 255, 255), 5)
-            cv2.putText(frame, str(self.counter), (100, 200), cv2.FONT_HERSHEY_DUPLEX, 5.0, (0, 255, 255), 10)
+            
+            # Draw Counter
+            cv2.putText(frame, str(counter), (100, 200), cv2.FONT_HERSHEY_DUPLEX, 5.0, (0, 255, 255), 10)
+            # Saves Image File
             cv2.imwrite("output/frame-{}.png".format(self.frameIndex), frame)
             if self.writer is None:
                 # initialize our video writer
@@ -267,6 +274,7 @@ class TrafficBot:
 
             self.writer.write(frame)
             self.frameIndex += 1
+            print('Total objects been detected:', len(boxes))
             if (self.frameIndex % 1000) == 0:
                 print("[INFO] sleeping for 10 sec...")
                 time.sleep(10)
