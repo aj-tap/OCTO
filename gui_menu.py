@@ -1,50 +1,83 @@
 import tkinter as tk
+import tkinter.filedialog as fd
+
+
+# NOTE: Extract functions and extract functions and extract functions
+#       THEN DRY KISS
 
 
 class GuiMenu(tk.Tk):
 
     def __init__(self):
         super().__init__()
+
+        # configure window
         self.resizable(False, False)
         self.wm_iconbitmap('./assets/traffic.ico')
         self.title('traffic-bot-counter')
 
+        # create a container w/ Frame (similar to html <div>)
         self.container = tk.Frame(self, highlightbackground='gray', highlightthickness=1)
         self.container.grid(sticky='nsew', padx=10, pady=10, ipadx=10, ipady=10)
+
+        # initialize text entries
+        self.input_entry = tk.Entry(self.container, bg="white")
+        self.output_entry = tk.Entry(self.container, bg="white")
+
+        # initialize value entries
+        self.min_confidence = tk.IntVar()
+        self.min_confidence.set(50)
+
+        self.threshold_lvl = tk.IntVar()
+        self.threshold_lvl.set(40)
+
         self.generate_ui()
 
+    def generate_ui(self):
+        # INPUT FILE
+        tk.Label(self.container, text="Input file") \
+            .grid(sticky='w', row=1, column=1)
+
+        # input_entry will be generated in between
+        self.input_entry.grid(sticky='w', ipadx=80, row=1, column=2)
+
+        tk.Button(self.container, text="Choose file", command=lambda: self.gui_input_dir()) \
+            .grid(sticky='w', row=1, column=3)
+
+        # OUTPUT DIRECTORY
+        tk.Label(self.container, text="Output directory") \
+            .grid(sticky='w', row=2, column=1)
+
+        # output_entry will be generated in between
+        self.output_entry.grid(sticky='w', ipadx=80, row=2, column=2)
+
+        tk.Button(self.container, text="Choose directory", command=lambda: self.gui_output_dir()) \
+            .grid(sticky='w', row=2, column=3)
+
+        # MIN CONFIDENCE LEVEL
+        tk.Label(self.container, text="Min confidence %") \
+            .grid(sticky='w', row=3, column=1)
+        tk.OptionMenu(self.container, self.min_confidence, *range(50, 101, 10)) \
+            .grid(sticky='w', row=3, column=2)
+        print(self.min_confidence.get())
+
+        # THRESHOLD LEVEL
+        tk.Label(self.container, text="Threshold level %") \
+            .grid(sticky='w', row=4, column=1)
+        tk.OptionMenu(self.container, self.threshold_lvl, *range(40, 101, 10)) \
+            .grid(sticky='w', row=4, column=2)
+        print(self.threshold_lvl.get())
+
     def gui_input_dir(self):
-        app.input_filename = tk.filedialog.askopenfilename(initialdir="/", title="Select file",
-                                                           filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
-        tk.Label(self.container, text=app.input_filename, bg="white", pady=2).grid(sticky='w', row=1, column=2)
+        app.input_filename = fd.askopenfilename(initialdir="/", title="Select file",
+                                                filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
+        self.input_entry.insert(0, app.input_filename)
+        print(app.input_filename)
 
     def gui_output_dir(self):
-        app.output_filename = tk.filedialog.askdirectory()
-        tk.Label(self.container, text=app.output_filename, bg="white", pady=2).grid(sticky='w', row=2, column=2)
-
-    def generate_ui(self):
-        tk.Label(self.container, text="Input file")\
-            .grid(sticky='w', row=1, column=1)
-        tk.Button(self.container, text="Choose file", command=lambda: self.gui_input_dir())\
-            .grid(sticky='w', row=1, column=3)
-        tk.Label(self.container, text="", bg="white", padx=80, pady=2).grid(sticky='w', row=1, column=2)
-
-        tk.Label(self.container, text="Output directory")\
-            .grid(sticky='w', row=2, column=1)
-        tk.Button(self.container, text="Choose directory", command=lambda: self.gui_output_dir())\
-            .grid(sticky='w', row=2, column=3)
-        tk.Label(self.container, text="", bg="white", padx=80, pady=2).grid(sticky='w', row=2, column=2)
-
-        # TO BE CONFIGURED
-        tk.Label(self.container, text="Min confidence %")\
-            .grid(sticky='w', row=3, column=1)
-        tk.OptionMenu(self.container, *range(0, 101, 10))\
-            .grid(sticky='w', row=3, column=2)
-
-        tk.Label(self.container, text="Threshold level") \
-            .grid(sticky='w', row=4, column=1)
-        tk.OptionMenu(self.container, *range(0, 101, 10)) \
-            .grid(sticky='w', row=4, column=2)
+        app.output_dir = fd.askdirectory()
+        self.output_entry.insert(0, app.output_dir)
+        print(app.output_dir)
 
 
 app = GuiMenu()
