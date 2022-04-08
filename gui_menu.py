@@ -3,8 +3,8 @@ import tkinter.filedialog as fd
 
 
 # NOTE: Extract functions and extract functions and extract functions
-#       THEN DRY KISS
-
+# TODO: DRY, KISS, shred functions then pack them in new classes, and
+#       create separate folder for GUI related classes and functions
 
 class GuiMenu(tk.Tk):
 
@@ -35,38 +35,49 @@ class GuiMenu(tk.Tk):
 
     def generate_ui(self):
         # INPUT FILE
-        tk.Label(self.container, text="Input file") \
+        tk.Label(self.container, text="Input file: ") \
             .grid(sticky='w', row=1, column=1)
 
         # input_entry will be generated in between
-        self.input_entry.grid(sticky='w', ipadx=80, row=1, column=2)
+        self.input_entry.grid(sticky='w', ipadx=80, row=1, column=2, columnspan=3)
 
-        tk.Button(self.container, text="Choose file", command=lambda: self.gui_input_dir()) \
-            .grid(sticky='w', row=1, column=3)
+        tk.Button(self.container, text="Choose file: ", command=lambda: self.gui_input_dir()) \
+            .grid(sticky='w', row=1, column=5)
 
         # OUTPUT DIRECTORY
-        tk.Label(self.container, text="Output directory") \
+        tk.Label(self.container, text="Output directory: ") \
             .grid(sticky='w', row=2, column=1)
 
         # output_entry will be generated in between
-        self.output_entry.grid(sticky='w', ipadx=80, row=2, column=2)
+        self.output_entry.grid(sticky='w', ipadx=80, row=2, column=2, columnspan=3)
 
-        tk.Button(self.container, text="Choose directory", command=lambda: self.gui_output_dir()) \
-            .grid(sticky='w', row=2, column=3)
+        tk.Button(self.container, text="Choose directory: ", command=lambda: self.gui_output_dir()) \
+            .grid(sticky='w', row=2, column=5)
 
         # MIN CONFIDENCE LEVEL
-        tk.Label(self.container, text="Min confidence %") \
+        tk.Label(self.container, text="Min confidence %: ") \
             .grid(sticky='w', row=3, column=1)
         tk.OptionMenu(self.container, self.min_confidence, *range(50, 101, 10)) \
             .grid(sticky='w', row=3, column=2)
         print(self.min_confidence.get())
 
         # THRESHOLD LEVEL
-        tk.Label(self.container, text="Threshold level %") \
+        tk.Label(self.container, text="Threshold level %: ") \
             .grid(sticky='w', row=4, column=1)
         tk.OptionMenu(self.container, self.threshold_lvl, *range(40, 101, 10)) \
             .grid(sticky='w', row=4, column=2)
         print(self.threshold_lvl.get())
+
+        # AREA OF INTEREST
+        tk.Label(self.container, text="Area of Interest: ") \
+            .grid(sticky='e', row=3, column=3)
+        tk.Button(self.container, text="Select two points", command=lambda: print("TRIGGER OPEN CV FUNCTION")) \
+            .grid(sticky='w', row=3, column=4)
+
+        # SUBMIT BUTTON
+        tk.Button(self.container, bg='black', foreground='white', text="START", command=lambda: print("RUN BOT!" +
+                                                                      "(also write user inputs to bot script)")) \
+            .grid(sticky='nsew', row=5, column=1, columnspan=1, padx=5)
 
     def gui_input_dir(self):
         app.input_filename = fd.askopenfilename(initialdir="/", title="Select file",
