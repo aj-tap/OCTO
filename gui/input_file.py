@@ -14,21 +14,21 @@ of the selected mp4 file to input_filepath.
 
 class InputFile:
     def __init__(self, parent_container):
-        self.input_filepath = None
         self.parent_container = parent_container
+        self.input_file_path = None
         self.input_entry = Entry(parent_container)
 
-    def render_input_file_widgets(self):
+    def render_input_file_widgets(self, r):
         Label(self.parent_container, text="Input file: ") \
-            .grid(sticky='w', row=1, column=1)
+            .grid(sticky='w', row=r, column=1)
 
-        self.input_entry.grid(sticky='w', ipadx=80, row=1, column=2, columnspan=3)
+        self.input_entry.grid(sticky='w', ipadx=80, row=r, column=2, columnspan=3)
 
         Button(self.parent_container, text="Choose file: ", command=lambda: self.accept_input_path()) \
-            .grid(sticky='w', row=1, column=5)
+            .grid(sticky='w', row=r, column=5)
 
     def accept_input_path(self):
-        self.input_filepath = fd.askopenfilename(initialdir="/", title="Select file",
-                                                 filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
-        self.input_entry.insert(0, self.input_filepath)
-        print(self.input_filepath)
+        self.input_file_path = fd.askopenfilename(initialdir="/", title="Select file",
+                                                  filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
+        self.input_entry.insert(0, self.input_file_path)
+        print(self.input_file_path)
