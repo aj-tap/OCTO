@@ -284,8 +284,8 @@ if __name__ == '__main__':
     fig = plt.figure()
     ax1 = fig.add_subplot(111, aspect='equal')
 
-  if not os.path.exists('output'):
-    os.makedirs('output')
+  if not os.path.exists('../output'):
+    os.makedirs('../output')
   pattern = os.path.join(args.seq_path, phase, '*', 'det', 'det.txt')
   for seq_dets_fn in glob.glob(pattern):
     mot_tracker = Sort(max_age=args.max_age, 
@@ -294,7 +294,7 @@ if __name__ == '__main__':
     seq_dets = np.loadtxt(seq_dets_fn, delimiter=',')
     seq = seq_dets_fn[pattern.find('*'):].split(os.path.sep)[0]
     
-    with open(os.path.join('output', '%s.txt'%(seq)),'w') as out_file:
+    with open(os.path.join('../output', '%s.txt' % (seq)), 'w') as out_file:
       print("Processing %s."%(seq))
       for frame in range(int(seq_dets[:,0].max())):
         frame += 1 #detection and frame numbers begin at 1
