@@ -12,9 +12,7 @@ can pass in highlight-background and thickness.
 
 
 class Container(Frame):
-
     def __init__(self):
-
         super().__init__(highlightbackground='gray', highlightthickness=1)
 
         self.pack(side="top", fill="both", expand=True, pady=5, padx=5)
