@@ -17,6 +17,7 @@ us to switch pages.
 
 class Menu(Frame):
     def __init__(self, parent_container, controller):
+
         super().__init__(parent_container)
 
         label = Label(self, text="Menu")
@@ -29,7 +30,9 @@ class Menu(Frame):
 class Result(Frame):
 
     def __init__(self, parent_container, controller):
+
         super().__init__(parent_container)
+
         label = Label(self, text="Result")
         label.grid(row=0, column=1, padx=10, pady=10)
         button1 = Button(self, text="Back",
