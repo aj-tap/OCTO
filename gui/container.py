@@ -12,12 +12,7 @@ can pass in highlight-background and thickness.
 
 
 class Container(Frame):
-
     def __init__(self):
+        super().__init__()  # (highlightbackground='gray', highlightthickness=0)
 
-        super().__init__(highlightbackground='gray', highlightthickness=1)
-
-        self.pack(side="top", fill="both", expand=True, pady=5, padx=5)
-
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        self.pack(pady=15, padx=15)

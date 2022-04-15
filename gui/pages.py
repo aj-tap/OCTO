@@ -1,5 +1,8 @@
-from tkinter import Frame
-from tkinter.ttk import Label, Button
+from tkinter import Frame, filedialog as fd
+from tkinter.ttk import Entry, Label, Button
+
+from gui.input_directory import InputDirectory
+from gui.input_file import InputFile
 
 """
 Here we'll create our own Frame objects that 
@@ -17,20 +20,19 @@ us to switch pages.
 
 class Menu(Frame):
     def __init__(self, parent_container, controller):
-
         super().__init__(parent_container)
 
-        label = Label(self, text="Menu")
-        label.grid(row=0, column=1, padx=10, pady=10)
-        button1 = Button(self, text="Start",
-                         command=lambda: controller.show_frame(Result))
-        button1.grid(row=1, column=1, padx=10, pady=10)
+        InputFile(self).render_input_file_widgets(1)
+        InputDirectory(self).render_input_directory_widgets(2)
+
+        start = Button(self, text="Start",
+                       command=lambda: controller.show_frame(Result))
+
+        start.grid(row=4, column=1)
 
 
 class Result(Frame):
-
     def __init__(self, parent_container, controller):
-
         super().__init__(parent_container)
 
         label = Label(self, text="Result")

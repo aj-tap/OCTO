@@ -5,7 +5,6 @@ from gui.container import Container
 
 
 class App(Tk):
-
     """
     Here we create our own Tk object called App --by
     inheriting from Tk to plug in our own configurations
@@ -14,7 +13,6 @@ class App(Tk):
     """
 
     def __init__(self):
-
         # superclass constructor
         super().__init__()
 
@@ -33,9 +31,7 @@ class App(Tk):
         self.load_pages(container)
 
     def load_pages(self, container):
-
         for i in (Menu, Result):
-
             # We simply render Menu and Result using grid
             frame = i(container, self)
             self.frames[i] = frame
@@ -45,7 +41,6 @@ class App(Tk):
         self.show_frame(Menu)
 
     def show_frame(self, page):
-
         # bring the chosen page upfront
         frame = self.frames[page]
         frame.tkraise()
