@@ -90,6 +90,3 @@ class GuiMenu(tk.Tk):
         self.output_entry.insert(0, app.output_dir)
         print(app.output_dir)
 
-
-app = GuiMenu()
-app.mainloop()
