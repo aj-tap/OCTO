@@ -15,7 +15,7 @@ class GuiMenu(tk.Tk):
         self.input_filename = None
         self.output_dir = None
         self.resizable(False, False)
-        self.wm_iconbitmap('./assets/traffic.ico')
+        self.wm_iconbitmap('../assets/traffic.ico')
         self.title('traffic-bot-counter')
 
         # create a container w/ Frame (similar to html <div>)
