@@ -1,5 +1,6 @@
 from traffic_bot import TrafficBot
-from gui.app import App
+from ui.gui_menu import GuiMenu
+
 # sample = TrafficBot("yolo-coco-V4", "input.mp4", "output")
 
 # sample.vidFrameChecker()  ## will return vidframe void.
@@ -7,8 +8,5 @@ from gui.app import App
 
 # Driver code
 if __name__ == "__main__":
-    app = App()
-    app.mainloop()
-
-
+    print('test')
 
