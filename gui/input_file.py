@@ -24,7 +24,7 @@ class InputFile:
 
         self.input_entry.grid(sticky='w', ipadx=80, row=r, column=2, columnspan=3)
 
-        Button(self.container, text="Choose file: ", command=lambda: self.accept_input_path()) \
+        Button(self.container, text="Choose file", command=lambda: self.accept_input_path()) \
             .grid(sticky='w', row=r, column=5)
 
     def accept_input_path(self):
