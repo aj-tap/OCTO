@@ -8,9 +8,8 @@ import tkinter as tk
 # sample.runBot()
 
 # Add GUI here
-test = GuiMenu()
-
+app = GuiMenu()
 # Driver code
 if __name__ == "__main__":
-    test
-
+    app.mainloop()
+    pass
