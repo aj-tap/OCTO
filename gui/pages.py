@@ -1,6 +1,7 @@
 from tkinter import Frame, filedialog as fd
 from tkinter.ttk import Entry, Label, Button
 
+from gui.confidence_level import ConfidenceLevel
 from gui.input_directory import InputDirectory
 from gui.input_file import InputFile
 
@@ -24,6 +25,7 @@ class Menu(Frame):
 
         InputFile(self).render_input_file_widgets(1)
         InputDirectory(self).render_input_directory_widgets(2)
+        ConfidenceLevel(self).render_confidence_level_widgets(3)
 
         start = Button(self, text="Start",
                        command=lambda: controller.show_frame(Result))
