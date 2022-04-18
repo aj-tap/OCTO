@@ -1,7 +1,7 @@
-from tkinter import Tk
+from tkinter import Tk, Frame
 
-from gui.pages import Menu, Result
-from gui.container import Container
+from gui.pages.menu import Menu
+from gui.pages.result import Result
 
 """
 Here we create our own Tk object called App --by
@@ -21,24 +21,25 @@ class App(Tk):
 
     def __init__(self, my_bot):
         super().__init__()
-
-        self.my_bot = my_bot
         self.configure_window()
         self.frame_storage = {}
 
-        container = Container()
-        self.load_pages(container)
+        self.container = Frame(self)
+        self.container.grid(row=0, column=0, padx=15, pady=15)
+
+        self.load_pages(self.container, my_bot)
 
     def configure_window(self):
         self.resizable(False, False)
         self.wm_iconbitmap('../assets/traffic.ico')
         self.title('traffic-bot-counter')
 
-    def load_pages(self, container):
-        for i in (Menu, Result):
-            frame = i(container, self, self.my_bot)
-            self.frame_storage[i] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
+    def load_pages(self, container, my_bot):
+        self.frame_storage[Menu] = Menu(container, self, Result, my_bot)
+        self.frame_storage[Result] = Result(container, self, Menu)
+
+        self.frame_storage[Menu].grid(row=0, column=0, sticky="nsew")
+        self.frame_storage[Result].grid(row=0, column=0, sticky="nsew")
 
         self.show_frame(Menu)
 
