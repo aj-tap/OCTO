@@ -11,15 +11,13 @@ from sort import *
 
 class TrafficBot:
 
-     # Sort 
-    
+    # Sort
 
     def __init__(self, yoloDir, inputFile, output, confidencelvl=0.5, threshold=0.3):
         # input footage
         # self.inputFile = inputFile ### Dups remove it
         self.tracker = Sort()
         self.memory = {}
-    
 
         # Setup Colors directory
         self.COLORS = self.generateColor()
@@ -29,9 +27,8 @@ class TrafficBot:
         # Threshold level 
         self.threshold = float(threshold)  ##
         # Setup Output Directory 
-        self.output = output # Output directory 
-        self.clearOutputDir(str(output) + "/*.png" )
-        
+        self.output = output  # Output directory
+        self.clearOutputDir(str(output) + "/*.png")
 
         # paths to the YOLO weights, model configuration and coco class labels
         self.weightPath = os.path.sep.join([yoloDir, "yolov4.weights"])
@@ -44,8 +41,8 @@ class TrafficBot:
         print("[INFO] loading YOLO from disk...")
         self.net = cv2.dnn.readNetFromDarknet(self.configPath, self.weightPath)
         # If nvidia is available
-        #self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-        #self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+        # self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+        # self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
         # and determine only the *output* layer names that we need from YOLO
         self.ln = self.net.getLayerNames()
@@ -59,21 +56,17 @@ class TrafficBot:
         self.writer = None
         (self.W, self.H) = (None, None)
         self.frameIndex = 0
-        print("[INFO] video input was sucessfully loaded")
-        
-        #temp 
+        print("[INFO] video input was successfully loaded")
+
+        # temp
         self.line = [(210, 622), (1183, 582)]
-  
 
         ### line = setLine()
 
-        #temp 
+        # temp
         self.total = self.vidFrameChecker()
 
-
-
-
-    def clearOutputDir(self,outputdir):
+    def clearOutputDir(self, outputdir):
         files = glob.glob(outputdir)
         for f in files:
             os.remove(f)
@@ -120,8 +113,7 @@ class TrafficBot:
         return colors
 
     def runBot(self):
-        
-       
+
         counter = 0
         while True:
             ### Read the next frame 
@@ -191,7 +183,7 @@ class TrafficBot:
                 for i in idxs.flatten():
                     (x, y) = (boxes[i][0], boxes[i][1])
                     (w, h) = (boxes[i][2], boxes[i][3])
-                    dets.append([x, y, x+w, y+h, confidences[i]])
+                    dets.append([x, y, x + w, y + h, confidences[i]])
 
             np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
             dets = np.asarray(dets)
@@ -216,7 +208,7 @@ class TrafficBot:
                     # draw a bounding box rectangle and label on the image
                     # color = [int(c) for c in COLORS[classIDs[i]]]
                     # cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-                    #color = [int(c) for c in COLORS[indexIDs[i] % len(COLORS)]]
+                    # color = [int(c) for c in COLORS[indexIDs[i] % len(COLORS)]]
                     color = [int(c) for c in self.COLORS[indexIDs[i] % len(self.COLORS)]]
                     cv2.rectangle(frame, (x, y), (w, h), color, 2)
                     if indexIDs[i] in self.previous:
@@ -239,11 +231,11 @@ class TrafficBot:
                             # ['FRAME','INDEX','TYPE','CFLVL']
                             temp = {'FRAME': self.frameIndex, 'INDEX': indexIDs[i], 'TYPE': self.LABELS[classIDs[i]],
                                     'CFLVL': confidences[i]}
-########### Writer 
-                        #with open(filename, 'a', newline='') as csvfile:
-                        #    dictwriter_obj = DictWriter(csvfile, fieldnames=headercsv)
-                        #    dictwriter_obj.writerow(temp)
-                        #    csvfile.close()
+                ########### Writer
+                # with open(filename, 'a', newline='') as csvfile:
+                #    dictwriter_obj = DictWriter(csvfile, fieldnames=headercsv)
+                #    dictwriter_obj.writerow(temp)
+                #    csvfile.close()
 
                 # text = "{}: {:.4f}".format(LABELS[classIDs[i]], confidences[i])
                 # text = "{}".format(indexIDs[i])
@@ -254,7 +246,7 @@ class TrafficBot:
 
             # Draw line
             cv2.line(frame, self.line[0], self.line[1], (0, 255, 255), 5)
-            
+
             # Draw Counter
             cv2.putText(frame, str(counter), (100, 200), cv2.FONT_HERSHEY_DUPLEX, 5.0, (0, 255, 255), 10)
             # Saves Image File
@@ -263,7 +255,7 @@ class TrafficBot:
                 # initialize our video writer
                 fourcc = cv2.VideoWriter_fourcc(*"MJPG")
                 self.writer = cv2.VideoWriter(self.output, fourcc, 30,
-                                         (frame.shape[1], frame.shape[0]), True)
+                                              (frame.shape[1], frame.shape[0]), True)
 
                 # some information on processing single frame
                 if self.total > 0:
