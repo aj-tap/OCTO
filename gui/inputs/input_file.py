@@ -9,14 +9,20 @@ and entry field.
 The button will trigger accept_input_path which 
 utilizes filedialog to accept then save a string 
 of the selected mp4 file to input_filepath.
+
+Update:
+We now pass a traffic-bot instance to the constructor
+in order to access the setter method in traffic-bot
+to modify the inputPath variable inside tb.
 """
 
 
 class InputFile:
-    def __init__(self, parent_container):
+    def __init__(self, parent_container, my_bot):
         self.container = parent_container
         self.input_file_path = None
         self.input_entry = Entry(parent_container)
+        self.bot = my_bot
 
     def render_input_file_widgets(self, r):
         Label(self.container, text="Input file: ") \
@@ -31,4 +37,5 @@ class InputFile:
         self.input_file_path = fd.askopenfilename(initialdir="/", title="Select file",
                                                   filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
         self.input_entry.insert(0, self.input_file_path)
-        print(self.input_file_path)
+
+        self.bot.setInputFile(self.input_file_path)

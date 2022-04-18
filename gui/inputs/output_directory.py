@@ -9,14 +9,21 @@ and entry field.
 The button will trigger accept_input_directory_path which 
 utilizes filedialog to accept then save a string 
 of the selected mp4 file to input_directory_filepath.
+
+Update:
+Similar to InputFile we will now pass a traffic-bot
+instance to the constructor for us to call the 
+setter method in tb to modify the output directory path
+variable.
 """
 
 
 class InputDirectory:
-    def __init__(self, parent_container):
+    def __init__(self, parent_container, my_bot):
         self.container = parent_container
         self.input_directory_path = None
         self.input_entry = Entry(parent_container)
+        self.bot = my_bot
 
     def render_input_directory_widgets(self, r):
         Label(self.container, text="Output directory: ") \
@@ -30,4 +37,5 @@ class InputDirectory:
     def accept_input_directory_path(self):
         self.input_directory_path = fd.askdirectory()
         self.input_entry.insert(0, self.input_directory_path)
-        print(self.input_directory_path)
+
+        self.bot.setOutput(self.input_directory_path)
