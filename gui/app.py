@@ -1,7 +1,5 @@
 from tkinter import Tk
 
-from src.traffic_bot import TrafficBot as bot
-
 from gui.pages import Menu, Result
 from gui.container import Container
 
@@ -9,22 +7,25 @@ from gui.container import Container
 class App(Tk):
     """
     Here we create our own Tk object called App --by
-    inheriting from Tk to plug in our own configurations
+    inheriting from Tk, to plug in our own configurations
     such as the icon, the window title, and initialize
     the frame classes from gui-menu to enable page switching.
+
+    Update:
+    We now accept a traffic-bot instance called my_bot
+    that we will pass to page classes so that widgets
+    that belong in those pages can access the traffic-bot
+    instance (for threshold and confidence)
     """
 
     def __init__(self, my_bot):
         super().__init__()
+
         self.my_bot = my_bot
         self.configure_window()
+        self.frame_storage = {}
 
         container = Container()
-
-        # this is where we will store our pages
-        self.frames = {}
-
-        # to load page frames from gui-menu
         self.load_pages(container)
 
     def configure_window(self):
@@ -34,16 +35,12 @@ class App(Tk):
 
     def load_pages(self, container):
         for i in (Menu, Result):
-            # We simply render Menu and Result using grid
             frame = i(container, self, self.my_bot)
-            self.frames[i] = frame
+            self.frame_storage[i] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        # display Menu by default instead of Result page
         self.show_frame(Menu)
 
     def show_frame(self, page):
-        # bring the chosen page upfront
-        frame = self.frames[page]
+        frame = self.frame_storage[page]
         frame.tkraise()
-
