@@ -14,17 +14,17 @@ of the selected mp4 file to input_directory_filepath.
 
 class InputDirectory:
     def __init__(self, parent_container):
-        self.parent_container = parent_container
+        self.container = parent_container
         self.input_directory_path = None
         self.input_entry = Entry(parent_container)
 
     def render_input_directory_widgets(self, r):
-        Label(self.parent_container, text="Output directory: ") \
+        Label(self.container, text="Output directory: ") \
             .grid(sticky='w', row=r, column=1)
 
         self.input_entry.grid(sticky='w', ipadx=80, row=r, column=2, columnspan=3)
 
-        Button(self.parent_container, text="Choose directory", command=lambda: self.accept_input_directory_path()) \
+        Button(self.container, text="Choose directory", command=lambda: self.accept_input_directory_path()) \
             .grid(sticky='w', row=r, column=5)
 
     def accept_input_directory_path(self):
