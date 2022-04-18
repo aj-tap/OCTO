@@ -27,17 +27,13 @@ class Menu(Frame):
 
         self.bot = my_bot
 
-        self.input_fil = InputFile(self)
-        self.input_fil.render_input_file_widgets(1)
+        InputFile(self).render_input_file_widgets(1)
 
-        self.input_dir = InputDirectory(self)
-        self.input_dir.render_input_directory_widgets(2)
+        InputDirectory(self).render_input_directory_widgets(2)
 
-        self.conf_lvl = ConfidenceLevel(self)
-        self.conf_lvl.render_confidence_level_widgets(3)
+        ConfidenceLevel(self).render_confidence_level_widgets(3)
 
-        self.thr_lvl = ThresholdLevel(self, self.bot)
-        self.thr_lvl.render_threshold_level_widgets(3)
+        ThresholdLevel(self, self.bot).render_threshold_level_widgets(3)
 
         self.start = Button(self, text="Start",
                             command=lambda: controller.show_frame(Result))
