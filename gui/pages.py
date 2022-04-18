@@ -25,15 +25,13 @@ class Menu(Frame):
     def __init__(self, parent_container, controller, my_bot):
         super().__init__(parent_container)
 
-        self.bot = my_bot
-
         InputFile(self).render_input_file_widgets(1)
 
         InputDirectory(self).render_input_directory_widgets(2)
 
-        ConfidenceLevel(self).render_confidence_level_widgets(3)
+        ConfidenceLevel(self, my_bot).render_confidence_level_widgets(3)
 
-        ThresholdLevel(self, self.bot).render_threshold_level_widgets(3)
+        ThresholdLevel(self, my_bot).render_threshold_level_widgets(3)
 
         self.start = Button(self, text="Start",
                             command=lambda: controller.show_frame(Result))
@@ -44,7 +42,7 @@ class Menu(Frame):
 
 
 class Result(Frame):
-    def __init__(self, parent_container, controller, my_bot):
+    def __init__(self, parent_container, controller, my_bot=None):
         super().__init__(parent_container)
 
         label = Label(self, text="Result")

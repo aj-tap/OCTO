@@ -15,18 +15,10 @@ class App(Tk):
     """
 
     def __init__(self, my_bot):
-
-        # superclass constructor
         super().__init__()
-
         self.my_bot = my_bot
+        self.configure_window()
 
-        # window configurations
-        self.resizable(False, False)
-        self.wm_iconbitmap('../assets/traffic.ico')
-        self.title('traffic-bot-counter')
-
-        # create a container from custom container class
         container = Container()
 
         # this is where we will store our pages
@@ -34,6 +26,11 @@ class App(Tk):
 
         # to load page frames from gui-menu
         self.load_pages(container)
+
+    def configure_window(self):
+        self.resizable(False, False)
+        self.wm_iconbitmap('../assets/traffic.ico')
+        self.title('traffic-bot-counter')
 
     def load_pages(self, container):
         for i in (Menu, Result):

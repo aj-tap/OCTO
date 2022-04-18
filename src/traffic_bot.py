@@ -116,6 +116,10 @@ class TrafficBot:
         self.threshold = new_threshold
         print(self.threshold)
 
+    def setConfidence(self, new_confidence):
+        self.confidencelvl = new_confidence
+        print(self.confidencelvl)
+
     def runBot(self):
 
         counter = 0
