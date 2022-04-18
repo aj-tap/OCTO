@@ -6,6 +6,7 @@ from gui.input_directory import InputDirectory
 from gui.input_file import InputFile
 from gui.threshold_level import ThresholdLevel
 
+
 """
 Here we'll create our own Frame objects that 
 will act as the pages to be rendered in app. 
@@ -21,8 +22,10 @@ us to switch pages.
 
 
 class Menu(Frame):
-    def __init__(self, parent_container, controller):
+    def __init__(self, parent_container, controller, my_bot):
         super().__init__(parent_container)
+
+        self.bot = my_bot
 
         self.input_fil = InputFile(self)
         self.input_fil.render_input_file_widgets(1)
@@ -33,7 +36,7 @@ class Menu(Frame):
         self.conf_lvl = ConfidenceLevel(self)
         self.conf_lvl.render_confidence_level_widgets(3)
 
-        self.thr_lvl = ThresholdLevel(self)
+        self.thr_lvl = ThresholdLevel(self, self.bot)
         self.thr_lvl.render_threshold_level_widgets(3)
 
         self.start = Button(self, text="Start",
@@ -45,7 +48,7 @@ class Menu(Frame):
 
 
 class Result(Frame):
-    def __init__(self, parent_container, controller):
+    def __init__(self, parent_container, controller, my_bot):
         super().__init__(parent_container)
 
         label = Label(self, text="Result")

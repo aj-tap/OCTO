@@ -15,4 +15,4 @@ class ConfidenceLevel:
         OptionMenu(self.container, self.min_confidence, *range(50, 101, 10))\
             .grid(sticky='w', row=r, column=2)
 
-        print(self.min_confidence.get())
+        # print(self.min_confidence.get())

@@ -1,9 +1,9 @@
 from tkinter import Tk
 
+from src.traffic_bot import TrafficBot as bot
+
 from gui.pages import Menu, Result
 from gui.container import Container
-
-from src.traffic_bot import TrafficBot as tb
 
 
 class App(Tk):
@@ -14,11 +14,13 @@ class App(Tk):
     the frame classes from gui-menu to enable page switching.
     """
 
-    def __init__(self):  # , tb):
-        # self.bot = tb
+    def __init__(self, my_bot):
 
         # superclass constructor
         super().__init__()
+
+        self.my_bot = my_bot
+
         # window configurations
         self.resizable(False, False)
         self.wm_iconbitmap('../assets/traffic.ico')
@@ -36,7 +38,7 @@ class App(Tk):
     def load_pages(self, container):
         for i in (Menu, Result):
             # We simply render Menu and Result using grid
-            frame = i(container, self)
+            frame = i(container, self, self.my_bot)
             self.frames[i] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
@@ -47,5 +49,4 @@ class App(Tk):
         # bring the chosen page upfront
         frame = self.frames[page]
         frame.tkraise()
-        self.bot.setThreshold()
 
