@@ -18,7 +18,7 @@ variable.
 """
 
 
-class InputDirectory:
+class InputDirectoryPath:
     def __init__(self, parent_container, my_bot):
         self.container = parent_container
         self.input_directory_path = None

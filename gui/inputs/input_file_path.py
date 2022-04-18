@@ -17,7 +17,7 @@ to modify the inputPath variable inside tb.
 """
 
 
-class InputFile:
+class InputFilePath:
     def __init__(self, parent_container, my_bot):
         self.container = parent_container
         self.input_file_path = None
