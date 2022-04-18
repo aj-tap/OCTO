@@ -13,9 +13,9 @@ class TrafficBot:
 
     # Sort
 
-    def __init__(self, yoloDir, inputFile, output, confidencelvl=0.5, threshold=0.3):
+    def __init__(self, yoloDir, inputFile=None, output=None, confidencelvl=0.5, threshold=0.3):
         # input footage
-        # self.inputFile = inputFile ### Dups remove it
+        self.inputFile = inputFile ### Dups remove it
         self.tracker = Sort()
         self.memory = {}
 
@@ -119,6 +119,14 @@ class TrafficBot:
     def setConfidence(self, new_confidence):
         self.confidencelvl = new_confidence
         print(self.confidencelvl)
+
+    def setOutput(self, new_output):
+        self.output = new_output
+        print(self.output)
+
+    def setInputFile(self, new_input_file):
+        self.input = new_input_file
+        print(self.input)
 
     def runBot(self):
 

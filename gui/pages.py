@@ -31,8 +31,8 @@ class Menu(Frame):
             .grid(row=5, column=1, ipadx=15)
 
     def render_curated_widgets(self, my_bot):
-        InputFile(self).render_input_file_widgets(1)
-        InputDirectory(self).render_input_directory_widgets(2)
+        InputFile(self, my_bot).render_input_file_widgets(1)
+        InputDirectory(self, my_bot).render_input_directory_widgets(2)
         ConfidenceLevel(self, my_bot).render_confidence_level_widgets(3)
         ThresholdLevel(self, my_bot).render_threshold_level_widgets(3)
 
