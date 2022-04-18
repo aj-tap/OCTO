@@ -2,8 +2,8 @@ from tkinter import Frame
 from tkinter.ttk import Button
 
 from gui.inputs.confidence import ConfidenceLevel
-from gui.inputs.output_directory import InputDirectory
-from gui.inputs.input_file import InputFile
+from gui.inputs.input_directory_path import InputDirectoryPath
+from gui.inputs.input_file_path import InputFilePath
 from gui.inputs.threshold import ThresholdLevel
 
 """
@@ -31,7 +31,7 @@ class Menu(Frame):
             .grid(row=5, column=1, ipadx=15)
 
     def render_widgets(self, my_bot):
-        InputFile(self, my_bot).render_input_file_widgets(1)
-        InputDirectory(self, my_bot).render_input_directory_widgets(2)
+        InputFilePath(self, my_bot).render_input_file_widgets(1)
+        InputDirectoryPath(self, my_bot).render_input_directory_widgets(2)
         ConfidenceLevel(self, my_bot).render_confidence_level_widgets(3)
         ThresholdLevel(self, my_bot).render_threshold_level_widgets(3)
