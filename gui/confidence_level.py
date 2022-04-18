@@ -1,13 +1,21 @@
 from tkinter.ttk import Label, OptionMenu
 from tkinter import IntVar
 
+"""
+This class is similar to ThresholdLevel 
+it will accept a container in the constructor 
+to render this widget and also the traffic-bot 
+instance in order to modify the threshold 
+variable inside of traffic-bot.
+"""
+
 
 class ConfidenceLevel:
     def __init__(self, parent_container, bot):
         self.container = parent_container
-        self.bot = bot
         self.min_confidence = IntVar()
         self.min_confidence.set(50)
+        self.bot = bot
 
     def render_confidence_level_widgets(self, r):
         Label(self.container, text="Min confidence % : ") \
