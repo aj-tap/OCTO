@@ -3,6 +3,8 @@ from tkinter import IntVar
 
 
 class ThresholdLevel:
+    threshold_lvl = None
+
     def __init__(self, parent_container):
         self.container = parent_container
         self.threshold_lvl = IntVar()
@@ -15,4 +17,4 @@ class ThresholdLevel:
         OptionMenu(self.container, self.threshold_lvl, *range(40, 101, 10)) \
             .grid(sticky='w', row=r, column=4)
 
-        print(self.threshold_lvl.get())
+        # command parameter in OptionMenu to trigger changes

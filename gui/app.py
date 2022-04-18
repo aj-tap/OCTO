@@ -3,6 +3,8 @@ from tkinter import Tk
 from gui.pages import Menu, Result
 from gui.container import Container
 
+from src.traffic_bot import TrafficBot as tb
+
 
 class App(Tk):
     """
@@ -12,10 +14,11 @@ class App(Tk):
     the frame classes from gui-menu to enable page switching.
     """
 
-    def __init__(self):
+    def __init__(self):  # , tb):
+        # self.bot = tb
+
         # superclass constructor
         super().__init__()
-
         # window configurations
         self.resizable(False, False)
         self.wm_iconbitmap('../assets/traffic.ico')
@@ -44,5 +47,5 @@ class App(Tk):
         # bring the chosen page upfront
         frame = self.frames[page]
         frame.tkraise()
-
+        self.bot.setThreshold()
 

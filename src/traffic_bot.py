@@ -112,6 +112,10 @@ class TrafficBot:
         colors = np.random.randint(0, 255, size=(200, 3), dtype="uint8")
         return colors
 
+    def setThreshold(self, new_threshold):
+        self.threshold = new_threshold
+        print(self.threshold)
+
     def runBot(self):
 
         counter = 0

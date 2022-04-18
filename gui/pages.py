@@ -39,7 +39,7 @@ class Menu(Frame):
         self.start = Button(self, text="Start",
                             command=lambda: controller.show_frame(Result))
 
-        self.start["state"] = "disabled"
+        # self.start["state"] = "disabled"
 
         self.start.grid(row=5, column=1, ipadx=15)
 
