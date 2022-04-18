@@ -1,10 +1,10 @@
 from tkinter import Frame
 from tkinter.ttk import Label, Button
 
-from gui.confidence_level import ConfidenceLevel
-from gui.input_directory import InputDirectory
-from gui.input_file import InputFile
-from gui.threshold_level import ThresholdLevel
+from gui.inputs.confidence import ConfidenceLevel
+from gui.inputs.output_directory import InputDirectory
+from gui.inputs.input_file import InputFile
+from gui.inputs.threshold import ThresholdLevel
 
 """
 Here we'll create our own Frame objects that 
