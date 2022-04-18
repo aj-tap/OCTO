@@ -3,20 +3,21 @@ from tkinter import Tk
 from gui.pages import Menu, Result
 from gui.container import Container
 
+"""
+Here we create our own Tk object called App --by
+inheriting from Tk, to plug in our own configurations
+such as the icon, the window title, and initialize
+the frame classes from gui-menu to enable page switching.
+
+Update:
+We now accept a traffic-bot instance called my_bot
+that we will pass to page classes so that widgets
+that belong in those pages can access the traffic-bot
+instance (for threshold and confidence)
+"""
+
 
 class App(Tk):
-    """
-    Here we create our own Tk object called App --by
-    inheriting from Tk, to plug in our own configurations
-    such as the icon, the window title, and initialize
-    the frame classes from gui-menu to enable page switching.
-
-    Update:
-    We now accept a traffic-bot instance called my_bot
-    that we will pass to page classes so that widgets
-    that belong in those pages can access the traffic-bot
-    instance (for threshold and confidence)
-    """
 
     def __init__(self, my_bot):
         super().__init__()
