@@ -9,6 +9,12 @@ and entry field.
 The button will trigger accept_input_directory_path which 
 utilizes filedialog to accept then save a string 
 of the selected mp4 file to input_directory_filepath.
+
+Update:
+Similar to InputFile we will now pass a traffic-bot
+instance to the constructor for us to call the 
+setter method in tb to modify the output directory path
+variable.
 """
 
 
