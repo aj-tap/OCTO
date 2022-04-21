@@ -33,7 +33,7 @@ class Result(Frame):
             window = Tk()
 
             # setting the title
-            window.title('Plotting in Tkinter')
+            window.title('Result')
 
             # dimensions of the main window
             window.geometry("500x500")

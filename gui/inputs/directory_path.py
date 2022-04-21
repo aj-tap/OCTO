@@ -1,40 +1,40 @@
 from tkinter import filedialog as fd
-from tkinter.ttk import Entry, Label, Button
+from tkinter.ttk import Label, Button
+
+from gui.inputs.abstract.paths import Path
 
 """
-Here we will create a class to render widgets
-related to the input directory such as the label
-and entry field.
+Similar to file_path, here we will render widgets
+related to accepting a path but this time, it's for 
+the output directory.
 
-The button will trigger accept_input_directory_path which 
+The button will trigger ask_for_path which 
 utilizes filedialog to accept then save a string 
-of the selected mp4 file to input_directory_filepath.
+of the selected mp4 file to self.path and then
+trigger the setter function in traffic_bot to set
+the output_directory_path in there.
 
-Update:
-Similar to InputFile we will now pass a traffic-bot
-instance to the constructor for us to call the 
-setter method in tb to modify the output directory path
-variable.
+UPDATE: 
+We will access the input_file_path in traffic_bot 
+instance through the parent_container.
 """
 
 
-class DirectoryPath:
+class DirectoryPath(Path):
     def __init__(self, parent_container):
-        self.container = parent_container
-        self.input_directory_path = None
-        self.input_entry = Entry(parent_container)
+        super().__init__(parent_container)
 
-    def render_input_directory_widgets(self, r):
+    def render_widgets(self, r):
         Label(self.container, text="Output directory: ") \
             .grid(sticky='w', row=r, column=1)
 
-        self.input_entry.grid(sticky='w', ipadx=80, row=r, column=2, columnspan=3)
+        self.entry.grid(sticky='w', ipadx=80, row=r, column=2, columnspan=3)
 
-        Button(self.container, text="Choose directory", command=lambda: self.accept_input_directory_path()) \
+        Button(self.container, text="Choose directory", command=lambda: self.ask_for_path()) \
             .grid(sticky='w', row=r, column=5)
 
-    def accept_input_directory_path(self):
-        self.input_directory_path = fd.askdirectory()
-        self.input_entry.insert(0, self.input_directory_path)
+    def ask_for_path(self):
+        self.path = fd.askdirectory()
+        self.entry.insert(0, self.path)
 
-        self.container.bot.setOutput(self.input_directory_path)
+        self.container.bot.setOutput(self.path)
