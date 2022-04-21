@@ -11,11 +11,10 @@ variable inside of traffic-bot.
 
 
 class ConfidenceLevel:
-    def __init__(self, parent_container, my_bot):
+    def __init__(self, parent_container):
         self.container = parent_container
         self.min_confidence = IntVar()
         self.min_confidence.set(50)
-        self.bot = my_bot
 
     def render_confidence_level_widgets(self, r):
         Label(self.container, text="Min confidence % : ") \
@@ -27,4 +26,4 @@ class ConfidenceLevel:
             .grid(sticky='w', row=r, column=2)
 
     def modify_confidence_level(self, confidence_lvl):
-        self.bot.setConfidence(confidence_lvl * .01)
+        self.container.bot.setConfidence(confidence_lvl * .01)

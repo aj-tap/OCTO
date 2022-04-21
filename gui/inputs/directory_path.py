@@ -19,11 +19,10 @@ variable.
 
 
 class DirectoryPath:
-    def __init__(self, parent_container, my_bot):
+    def __init__(self, parent_container):
         self.container = parent_container
         self.input_directory_path = None
         self.input_entry = Entry(parent_container)
-        self.bot = my_bot
 
     def render_input_directory_widgets(self, r):
         Label(self.container, text="Output directory: ") \
@@ -38,4 +37,4 @@ class DirectoryPath:
         self.input_directory_path = fd.askdirectory()
         self.input_entry.insert(0, self.input_directory_path)
 
-        self.bot.setOutput(self.input_directory_path)
+        self.container.bot.setOutput(self.input_directory_path)

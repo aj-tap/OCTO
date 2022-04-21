@@ -128,6 +128,9 @@ class TrafficBot:
         self.input = new_input_file
         print(self.input)
 
+    def temporaryTriggerForIntersectionLine(self):
+        print("Trigger function to launch opencv drawing tool")
+
     def runBot(self):
 
         counter = 0

@@ -18,11 +18,10 @@ to modify the inputPath variable inside tb.
 
 
 class FilePath:
-    def __init__(self, parent_container, my_bot):
+    def __init__(self, parent_container):
         self.container = parent_container
         self.input_file_path = None
         self.input_entry = Entry(parent_container)
-        self.bot = my_bot
 
     def render_input_file_widgets(self, r):
         Label(self.container, text="Input file: ") \
@@ -38,4 +37,4 @@ class FilePath:
                                                   filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
         self.input_entry.insert(0, self.input_file_path)
 
-        self.bot.setInputFile(self.input_file_path)
+        self.container.bot.setInputFile(self.input_file_path)

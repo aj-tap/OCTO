@@ -11,11 +11,10 @@ of traffic-bot.
 
 
 class ThresholdLevel:
-    def __init__(self, parent_container, my_bot):
+    def __init__(self, parent_container):
         self.container = parent_container
         self.threshold_lvl = IntVar()
         self.threshold_lvl.set(40)
-        self.bot = my_bot
 
     def render_threshold_level_widgets(self, r):
         Label(self.container, text="Threshold level % : ") \
@@ -27,4 +26,4 @@ class ThresholdLevel:
             .grid(sticky='w', row=r, column=4)
 
     def modify_threshold_level(self, threshold_lvl):
-        self.bot.setThreshold(threshold_lvl*.01)
+        self.container.bot.setThreshold(threshold_lvl*.01)
