@@ -24,18 +24,20 @@ class App(Tk):
         self.configure_window()
         self.frame_storage = {}
 
+        self.bot = my_bot
+
         self.container = Frame(self)
         self.container.grid(row=0, column=0, padx=15, pady=15)
 
-        self.load_pages(self.container, my_bot)
+        self.load_pages(self.container)
 
     def configure_window(self):
         self.resizable(False, False)
         self.wm_iconbitmap('../assets/traffic.ico')
         self.title('traffic-bot-counter')
 
-    def load_pages(self, container, my_bot):
-        self.frame_storage[Menu] = Menu(container, self, Result, my_bot)
+    def load_pages(self, container):
+        self.frame_storage[Menu] = Menu(container, self, Result)
         self.frame_storage[Result] = Result(container, self, Menu)
 
         self.frame_storage[Menu].grid(row=0, column=0, sticky="nsew")
