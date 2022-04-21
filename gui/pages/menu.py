@@ -4,6 +4,7 @@ from tkinter.ttk import Button
 from gui.inputs.confidence import ConfidenceLevel
 from gui.inputs.directory_path import DirectoryPath
 from gui.inputs.file_path import FilePath
+from gui.inputs.intersection_line import IntersectionLine
 from gui.inputs.threshold import ThresholdLevel
 
 """
@@ -24,14 +25,17 @@ class Menu(Frame):
     def __init__(self, parent_container, controller, result, my_bot):
         super().__init__(parent_container)
 
-        self.render_widgets(my_bot)
+        self.bot = my_bot
+        self.render_widgets()
 
         Button(self, text="Start",
                command=lambda: controller.show_frame(result))\
             .grid(row=5, column=1, ipadx=15)
 
-    def render_widgets(self, my_bot):
-        FilePath(self, my_bot).render_input_file_widgets(1)
-        DirectoryPath(self, my_bot).render_input_directory_widgets(2)
-        ConfidenceLevel(self, my_bot).render_confidence_level_widgets(3)
-        ThresholdLevel(self, my_bot).render_threshold_level_widgets(3)
+    def render_widgets(self):
+        FilePath(self).render_input_file_widgets(1)
+        DirectoryPath(self).render_input_directory_widgets(2)
+        ConfidenceLevel(self).render_confidence_level_widgets(3)
+        ThresholdLevel(self).render_threshold_level_widgets(3)
+        IntersectionLine(self).render_intersection_line_widgets(4)
+
