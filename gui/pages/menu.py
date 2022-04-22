@@ -1,3 +1,20 @@
+"""
+Here we will create our Menu page that will inherit
+Frame which will act as a page.
+
+self (this is Menu) = where the widgets will be rendered.
+
+app = to access app-bot and change bot properties and methods
+for threshold, confidence, paths, intersection line.
+
+main_container = where the menu will be rendered.
+A frame object needs a Tk object or another frame
+to render into in this case we will render into
+the main_container.
+
+next_page = result page.
+"""
+
 from tkinter import Frame
 from tkinter.ttk import Button
 
@@ -7,37 +24,19 @@ from gui.inputs.file_path import FilePath
 from gui.inputs.intersection_line import IntersectionLine
 from gui.inputs.threshold_level import ThresholdLevel
 
-"""
-Here we will create our Menu page. 
-
-We inherit from Frame because Menu is basically
-just another Frame.
-
-A Frame object needs a Tk object or another 
-frame to render into in this case we will render
-into the parent_container.
-    
-We will also accept app itself (controller) to 
-access the show_frame and allow us to switch pages.
-
-In addition we will accept the result page for us to be able
-to call it, and we will also accept my_bot which is an 
-instance of traffic_bot for us to access it's attributes
-and methods.
-"""
-
 
 class Menu(Frame):
-    def __init__(self, parent_container, controller, result):
-        super().__init__(parent_container)
+    def __init__(self, app, main_container, next_page):
+        super().__init__(main_container)
 
-        self.bot = controller.bot
-
+        self.bot = app.bot
         self.render_widgets()
 
         Button(self, text="Start",
-               command=lambda: controller.show_frame(result))\
+               command=lambda: app.show_frame(next_page))\
             .grid(row=5, column=1, ipadx=15)
+
+        self.grid(row=0, column=0, sticky='nsew')
 
     def render_widgets(self):
         FilePath(self).render_widgets(1)
@@ -45,4 +44,3 @@ class Menu(Frame):
         ConfidenceLevel(self).render_widgets(3)
         ThresholdLevel(self).render_widgets(3)
         IntersectionLine(self).render_widgets(4)
-
