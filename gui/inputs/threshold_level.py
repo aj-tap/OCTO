@@ -1,14 +1,17 @@
-from tkinter.ttk import Label, OptionMenu
-
-from gui.inputs.abstract.levels import Levels
-
 """
-In this class we will accept a container
-in the constructor to render this widget into
+This class is for widgets and functionalities
+that are related to the threshold level we will
+accept a container in the constructor to render
+this widget into.
 
 We will access the threshold_lvl in traffic_bot
-by accessing it's instance from the parent_container.
+by accessing its instance from the parent_container
+(self.container.bot)
 """
+
+from tkinter.ttk import Label, OptionMenu
+
+from gui.inputs.abstract.level import Levels
 
 
 class ThresholdLevel(Levels):
@@ -16,13 +19,13 @@ class ThresholdLevel(Levels):
         super().__init__(parent_container)
 
     def render_widgets(self, r):
-        Label(self.container, text="Threshold level % : ") \
+        Label(self.parent_container, text="Threshold level % : ") \
             .grid(sticky='e', row=r, column=3)
 
-        OptionMenu(self.container, self.level,
+        OptionMenu(self.parent_container, self.level,
                    command=self.set_new_level,
                    *range(40, 101, 10)) \
             .grid(sticky='w', row=r, column=4)
 
     def set_new_level(self, new_lvl):
-        self.container.bot.setThreshold(new_lvl * .01)
+        self.parent_container.bot.setThreshold(new_lvl * .01)
