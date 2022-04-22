@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from tkinter import IntVar
 
 
-class Levels(ABC):
+class Level(ABC):
     def __init__(self, parent_container):
         self.parent_container = parent_container
         self.level = IntVar()

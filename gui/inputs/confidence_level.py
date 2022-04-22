@@ -11,10 +11,10 @@ by accessing its instance from the parent_container
 
 from tkinter.ttk import Label, OptionMenu
 
-from gui.inputs.abstract.level import Levels
+from gui.inputs.abstract.level import Level
 
 
-class ConfidenceLevel(Levels):
+class ConfidenceLevel(Level):
     def __init__(self, parent_container):
         super().__init__(parent_container)
 
