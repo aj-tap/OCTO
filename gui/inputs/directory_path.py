@@ -17,7 +17,7 @@ instance through the parent_container
 from tkinter import filedialog as fd
 from tkinter.ttk import Label, Button
 
-from gui.inputs.abstract.paths import Path
+from gui.inputs.abstract.path import Path
 
 
 class DirectoryPath(Path):
