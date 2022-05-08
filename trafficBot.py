@@ -1,4 +1,4 @@
-## Libraries 
+## Libraries
 import numpy as np
 import argparse
 import imutils
@@ -7,6 +7,7 @@ import cv2
 import os
 import glob
 from sort import *
+from WriterCsv import *
 
 
 class TrafficBot:
@@ -14,30 +15,33 @@ class TrafficBot:
     # Sort
 
     def __init__(self, yoloDir, inputFile=None, output=None, confidencelvl=0.5, threshold=0.3):
-        # input footage
-        self.inputFile = inputFile ### Dups remove it
-        self.tracker = Sort()
+
+        # Writer CSV
         self.memory = {}
+        self.writercsv = WriterCsv()
+
+        # input footage
+        self.inputFile = inputFile  ### Dups remove it
 
         # Setup Colors directory
         self.COLORS = self.generateColor()
 
-        # Confidence Level 
+        # Confidence Level
         self.confidencelvl = float(confidencelvl)
-        # Threshold level 
+        # Threshold level
         self.threshold = float(threshold)  ##
-        # Setup Output Directory 
-        self.output = output  # Output directory
+        # Setup Output Directory
+        self.output = output
         self.clearOutputDir(str(output) + "/*.png")
 
-        # paths to the YOLO weights, model configuration and coco class labels
+        # Paths to the YOLO weights, model configuration and coco class labels
         self.weightPath = os.path.sep.join([yoloDir, "yolov4.weights"])
         self.configPath = os.path.sep.join([yoloDir, "yolov4.cfg"])
 
         self.labelsPath = os.path.sep.join([yoloDir, "coco.names"])
         self.LABELS = open(self.labelsPath).read().strip().split("\n")
 
-        # YOLO object detector trained on COCO dataset 
+        # YOLO object detector trained on COCO dataset
         print("[INFO] loading YOLO from disk...")
         self.net = cv2.dnn.readNetFromDarknet(self.configPath, self.weightPath)
         # If nvidia is available
@@ -73,11 +77,10 @@ class TrafficBot:
 
     def setLine(self):
         """
-        set the intersection line or area of interest.  
+        set the intersection line or area of interest.
         """
         pass
 
-    ####################################################################
     def intersect(self, A, B, C, D):
         """
         Return true if line segments AB and CD intersect
@@ -132,31 +135,33 @@ class TrafficBot:
         print("Trigger function to launch opencv drawing tool")
 
     def runBot(self):
-
+        tracker = Sort()
         counter = 0
         while True:
-            ### Read the next frame 
+
+            # read the next frame from the file
             (grabbed, frame) = self.vs.read()
+
+            # if the frame was not grabbed, then we have reached the end of the stream
             if not grabbed:
                 break
 
-            ### If the frame dimensions are empty, grab them
+            # if the frame dimensions are empty, grab them
             if self.W is None or self.H is None:
                 (self.H, self.W) = frame.shape[:2]
 
             # construct a blob from the input frame and then perform a forward
+            # pass of the YOLO object detector, giving us our bounding boxes
+            # and associated probabilities
             blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (416, 416),
                                          swapRB=True, crop=False)
-
-            # Pass of the YOLO object detector, giving us our bounding boxes # and associated probabilities
             self.net.setInput(blob)
-            #### Starts the time (loging)
             start = time.time()
-            layerOutputs = self.net.forward(self.ln)  ###  Layer Outputs
-            #### Ends the time (Loging)
+            layerOutputs = self.net.forward(self.ln)
             end = time.time()
 
-            # Initialize our lists of detected bounding boxes, confidences, and Class IDs
+            # initialize our lists of detected bounding boxes, confidences,
+            # and class IDs, respectively
             boxes = []
             confidences = []
             classIDs = []
@@ -196,6 +201,7 @@ class TrafficBot:
             # apply non-maxima suppression to suppress weak, overlapping
             # bounding boxes
             idxs = cv2.dnn.NMSBoxes(boxes, confidences, self.confidencelvl, self.threshold)
+
             dets = []
             if len(idxs) > 0:
                 # loop over the indexes we are keeping
@@ -206,13 +212,14 @@ class TrafficBot:
 
             np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
             dets = np.asarray(dets)
-            tracks = self.tracker.update(dets)
+            tracks = tracker.update(dets)
 
             boxes = []
             indexIDs = []
             c = []
-            self.previous = self.memory.copy()
+            previous = self.memory.copy()
             self.memory = {}
+
             for track in tracks:
                 boxes.append([track[0], track[1], track[2], track[3]])
                 indexIDs.append(int(track[4]))
@@ -224,14 +231,16 @@ class TrafficBot:
                     # extract the bounding box coordinates
                     (x, y) = (int(box[0]), int(box[1]))
                     (w, h) = (int(box[2]), int(box[3]))
+
                     # draw a bounding box rectangle and label on the image
                     # color = [int(c) for c in COLORS[classIDs[i]]]
                     # cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-                    # color = [int(c) for c in COLORS[indexIDs[i] % len(COLORS)]]
+
                     color = [int(c) for c in self.COLORS[indexIDs[i] % len(self.COLORS)]]
                     cv2.rectangle(frame, (x, y), (w, h), color, 2)
-                    if indexIDs[i] in self.previous:
-                        previous_box = self.previous[indexIDs[i]]
+
+                    if indexIDs[i] in previous:
+                        previous_box = previous[indexIDs[i]]
                         (x2, y2) = (int(previous_box[0]), int(previous_box[1]))
                         (w2, h2) = (int(previous_box[2]), int(previous_box[3]))
                         p0 = (int(x + (w - x) / 2), int(y + (h - y) / 2))
@@ -246,58 +255,59 @@ class TrafficBot:
                                                                                                           classIDs[i]],
                                                                                                       previous_box))
                             print("\n")
+
                             temp = []
                             # ['FRAME','INDEX','TYPE','CFLVL']
                             temp = {'FRAME': self.frameIndex, 'INDEX': indexIDs[i], 'TYPE': self.LABELS[classIDs[i]],
                                     'CFLVL': confidences[i]}
-                ########### Writer
-                # with open(filename, 'a', newline='') as csvfile:
-                #    dictwriter_obj = DictWriter(csvfile, fieldnames=headercsv)
-                #    dictwriter_obj.writerow(temp)
-                #    csvfile.close()
+                            self.writercsv.append_data(temp)
 
-                # text = "{}: {:.4f}".format(LABELS[classIDs[i]], confidences[i])
-                # text = "{}".format(indexIDs[i])
-                text = "{}={}: {:.4f}".format(indexIDs[i], self.LABELS[classIDs[i]], confidences[i])
-                # print("object id registered{}={}: {:.4f} \n".format(indexIDs[i], LABELS[classIDs[i]], confidences[i]))
-                cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-                i += 1
+                    # text = "{}: {:.4f}".format(LABELS[classIDs[i]], confidences[i])
+                    # text = "{}".format(indexIDs[i])
+                    text = "{}={}: {:.4f}".format(indexIDs[i], self.LABELS[classIDs[i]], confidences[i])
+                    # print("object id registered{}={}: {:.4f} \n".format(indexIDs[i], LABELS[classIDs[i]], confidences[i]))
+                    cv2.putText(frame, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                    i += 1
 
-            # Draw line
+            # draw line
             cv2.line(frame, self.line[0], self.line[1], (0, 255, 255), 5)
 
-            # Draw Counter
+            # draw counter
             cv2.putText(frame, str(counter), (100, 200), cv2.FONT_HERSHEY_DUPLEX, 5.0, (0, 255, 255), 10)
-            # Saves Image File
+            # counter += 1
+
+            # saves image file
             cv2.imwrite("output/frame-{}.png".format(self.frameIndex), frame)
+
+            # check if the video writer is None
             if self.writer is None:
                 # initialize our video writer
                 fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+
                 self.writer = cv2.VideoWriter(self.output, fourcc, 30,
                                               (frame.shape[1], frame.shape[0]), True)
 
-                # some information on processing single frame
-                if self.total > 0:
-                    elap = (end - start)
-                    print("[INFO] single frame took {:.4f} seconds".format(elap))
-                    print("[INFO] estimated total time to finish: {:.4f}".format(
-                        elap * self.total))
+            # some information on processing single frame
+            # if self.total > 0:
+            #	elap = (end - start)
+            #	print("[INFO] single frame took {:.4f} seconds".format(elap))
+            #	print("[INFO] estimated total time to finish: {:.4f}".format(
+            #		elap * self.total))
 
+            # write the output frame to disk
             self.writer.write(frame)
+
+            # increase frame index
             self.frameIndex += 1
-            print('Total objects been detected:', len(boxes))
-            if (self.frameIndex % 1000) == 0:
-                print("[INFO] sleeping for 10 sec...")
-                time.sleep(10)
-                # vs.release()
-                # exit()
+
+            if self.frameIndex >= 4000:
+                print("[INFO] cleaning up...")
+                self.writer.release()
+                self.vs.release()
+                exit()
+
+        # release the file pointers
 
         print("[INFO] cleaning up...")
-        self.writer.release()
-        self.vs.release()
-
-# print('Total objects been detected:', len(boxes))
-# print('Number of objects left after non-maximum suppression:', counter - 1)
-
-
-# test
+        writer.release()
+        vs.release()
