@@ -37,4 +37,4 @@ class DirectoryPath(Path):
         self.path = fd.askdirectory()
         self.entry.insert(0, self.path)
 
-        self.parent_container.bot.setOutput(self.path)
+        self.parent_container.bot.set_output_dir(self.path)

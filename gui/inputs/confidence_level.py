@@ -28,4 +28,4 @@ class ConfidenceLevel(Level):
             .grid(sticky='w', row=r, column=2)
 
     def set_new_level(self, new_lvl):
-        self.parent_container.bot.setConfidence(new_lvl * .01)
+        self.parent_container.bot.set_confidence_lvl(new_lvl * .01)

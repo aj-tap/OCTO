@@ -37,4 +37,4 @@ class FilePath(Path):
                                                   filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
         self.entry.insert(0, self.path)
 
-        self.parent_container.bot.setInputFile(self.path)
+        self.parent_container.bot.set_input_file(self.path)

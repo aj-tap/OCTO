@@ -28,4 +28,4 @@ class ThresholdLevel(Level):
             .grid(sticky='w', row=r, column=4)
 
     def set_new_level(self, new_lvl):
-        self.parent_container.bot.setThreshold(new_lvl * .01)
+        self.parent_container.bot.set_threshold(new_lvl * .01)

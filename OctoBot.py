@@ -8,37 +8,39 @@ import os
 import glob
 from sort import *
 from WriterCsv import *
+from LineFinder import *
+from Graph import *
 
+
+# import CoodFinder
 
 class TrafficBot:
 
-    # Sort
-
-    def __init__(self, yoloDir, inputFile=None, output=None, confidencelvl=0.5, threshold=0.3):
-
-        # Writer CSV
+    def __init__(self, yolo_directory="yolo-coco-V4", input_file=None, output=None, confidence_level=0.5,
+                 threshold=0.3):
+        # Writer object
         self.memory = {}
-        self.writercsv = WriterCsv()
+        self.writer_csv = WriterCsv()
 
         # input footage
-        self.inputFile = inputFile  ### Dups remove it
+        self.inputFile = input_file
 
         # Setup Colors directory
-        self.COLORS = self.generateColor()
+        self.COLORS = self.generate_color()
 
         # Confidence Level
-        self.confidencelvl = float(confidencelvl)
+        self.confidence_level = float(confidence_level)
         # Threshold level
-        self.threshold = float(threshold)  ##
+        self.threshold = float(threshold)
         # Setup Output Directory
         self.output = output
-        self.clearOutputDir(str(output) + "/*.png")
+        self.clear_output_directory()
 
         # Paths to the YOLO weights, model configuration and coco class labels
-        self.weightPath = os.path.sep.join([yoloDir, "yolov4.weights"])
-        self.configPath = os.path.sep.join([yoloDir, "yolov4.cfg"])
+        self.weightPath = os.path.sep.join([yolo_directory, "yolov4.weights"])
+        self.configPath = os.path.sep.join([yolo_directory, "yolov4.cfg"])
 
-        self.labelsPath = os.path.sep.join([yoloDir, "coco.names"])
+        self.labelsPath = os.path.sep.join([yolo_directory, "coco.names"])
         self.LABELS = open(self.labelsPath).read().strip().split("\n")
 
         # YOLO object detector trained on COCO dataset
@@ -55,31 +57,32 @@ class TrafficBot:
 
         # initialize the video stream, pointer to output video file, and frame dimensions
         print("[INFO] Loading the input video")
-        self.vs = cv2.VideoCapture(inputFile)
-        ### variables
+        self.vs = cv2.VideoCapture(input_file)
+        # Variables
         self.writer = None
         (self.W, self.H) = (None, None)
         self.frameIndex = 0
         print("[INFO] video input was successfully loaded")
 
-        # temp
-        self.line = [(210, 622), (1183, 582)]
+        # line finder object
+        self.line_finder = LineFinder(input_file)
+        self.line = [(210, 622), (1183, 582)]  # temp remove it
+        # self.line = []
+        self.total = self.video_frame_checker()
 
-        ### line = setLine()
+        # Graph object
+        graph_csv = GraphCSV()
 
-        # temp
-        self.total = self.vidFrameChecker()
-
-    def clearOutputDir(self, outputdir):
-        files = glob.glob(outputdir)
+    def clear_output_directory(self):
+        files = glob.glob(str(self.output) + "/*.png")
         for f in files:
             os.remove(f)
 
-    def setLine(self):
+    def set_line(self, line):
         """
         set the intersection line or area of interest.
         """
-        pass
+        self.line = self.line_finder.get_line()
 
     def intersect(self, A, B, C, D):
         """
@@ -90,7 +93,7 @@ class TrafficBot:
     def ccw(self, A, B, C):
         return (C[1] - A[1]) * (B[0] - A[0]) > (B[1] - A[1]) * (C[0] - A[0])
 
-    def vidFrameChecker(self):
+    def video_frame_checker(self):
         """
         1. try to determine the total number of frames in the video file
         2. an error occurred while trying to determine the total
@@ -107,7 +110,7 @@ class TrafficBot:
             total = -1
         return total
 
-    def generateColor(self):
+    def generate_color(self):
         """
        initialize a list of colors to represent each possible class label
         """
@@ -115,26 +118,24 @@ class TrafficBot:
         colors = np.random.randint(0, 255, size=(200, 3), dtype="uint8")
         return colors
 
-    def setThreshold(self, new_threshold):
+    def set_threshold(self, new_threshold):
         self.threshold = new_threshold
         print(self.threshold)
 
-    def setConfidence(self, new_confidence):
-        self.confidencelvl = new_confidence
-        print(self.confidencelvl)
+    def set_confidence_lvl(self, new_confidence):
+        self.confidence_level = new_confidence
+        print(self.confidence_level)
 
-    def setOutput(self, new_output):
+    def set_output_dir(self, new_output):
         self.output = new_output
         print(self.output)
 
-    def setInputFile(self, new_input_file):
+    def set_input_file(self, new_input_file):
         self.input = new_input_file
         print(self.input)
 
-    def temporaryTriggerForIntersectionLine(self):
-        print("Trigger function to launch opencv drawing tool")
-
-    def runBot(self):
+    def run_bot(self):
+        # self.set_line()
         tracker = Sort()
         counter = 0
         while True:
@@ -178,7 +179,7 @@ class TrafficBot:
 
                     # filter out weak predictions by ensuring the detected
                     # probability is greater than the minimum probability
-                    if confidence > self.confidencelvl:
+                    if confidence > self.confidence_level:
                         # scale the bounding box coordinates back relative to
                         # the size of the image, keeping in mind that YOLO
                         # actually returns the center (x, y)-coordinates of
@@ -200,7 +201,7 @@ class TrafficBot:
 
             # apply non-maxima suppression to suppress weak, overlapping
             # bounding boxes
-            idxs = cv2.dnn.NMSBoxes(boxes, confidences, self.confidencelvl, self.threshold)
+            idxs = cv2.dnn.NMSBoxes(boxes, confidences, self.confidence_level, self.threshold)
 
             dets = []
             if len(idxs) > 0:
@@ -260,7 +261,7 @@ class TrafficBot:
                             # ['FRAME','INDEX','TYPE','CFLVL']
                             temp = {'FRAME': self.frameIndex, 'INDEX': indexIDs[i], 'TYPE': self.LABELS[classIDs[i]],
                                     'CFLVL': confidences[i]}
-                            self.writercsv.append_data(temp)
+                            self.writer_csv.append_data(temp)
 
                     # text = "{}: {:.4f}".format(LABELS[classIDs[i]], confidences[i])
                     # text = "{}".format(indexIDs[i])
