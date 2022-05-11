@@ -1,20 +1,3 @@
-"""
-This page is similar to Menu class, but here we
-will render the results and summon the graph.
-
-self = where the widgets will be rendered.
-
-app = to access app-bot and change bot properties and methods
-for threshold, confidence, paths, intersection line.
-
-main_container = where the menu will be rendered.
-A frame object needs a Tk object or another frame
-to render into in this case we will render into
-the main_container.
-
-next_page = result page.
-"""
-
 from tkinter.ttk import Label, Button
 from tkinter import Frame, Tk
 
@@ -23,43 +6,43 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationTool
 
 
 class Result(Frame):
+    """
+    A class that inherits tkinter Frame properties where we
+    will render our result related tkinter widgets into.
+    """
+
     def __init__(self, app, main_container, previous_page):
+        """
+        Parameters
+        -------
+        app : App
+            The App class itself, in order for us to access
+            the properties of the bot which is also a property of App
+            which we will then need to set the necessary data for
+            the threshold, confidence paths, and intersection line.
+        main_container : Frame
+            This is where the Menu page will be rendered into.
+        previous_page : Any
+            This is to raise the previous page---Menu.
+
+        ...
+        Note; self refers to the Result page itself, which is a frame, this means
+        we can render widgets into self.
+        """
+
         super().__init__(main_container)
 
-        Button(self, text="Plot", command=lambda: plot()).pack()
+        app.bot.graph_csv.get_data_arr()
 
-        Button(self, text="Back",
-               command=lambda: app.show_frame(previous_page)).pack()
+        Button(self, text="Bar Graph", command=lambda: plot_bar()).pack()
+        Button(self, text="Scatter Plot", command=lambda: plot_scatter()).pack()
 
         Label(self, text="By: Aldwin Tapican and Marjolo Mabuti").pack()
 
         self.grid(row=0, column=0, sticky='nsew')
 
-        # TEMPORARY
-        def plot():
-            window = Tk()
-            window.title('Result')
-            window.wm_iconbitmap('../assets/traffic.ico')
-            window.geometry("500x500")
-            # the figure that will contain the plot
-            fig = Figure(figsize=(5, 5),
-                         dpi=100)
-            # list of squares
-            y = [i ** 2 for i in range(101)]
-            # adding the subplot
-            plot1 = fig.add_subplot(111)
-            # plotting the graph
-            plot1.plot(y)
-            # creating the Tkinter canvas
-            # containing the Matplotlib figure
-            canvas = FigureCanvasTkAgg(fig,
-                                       master=window)
-            canvas.draw()
-            # placing the canvas on the Tkinter window
-            canvas.get_tk_widget().pack()
-            # creating the Matplotlib toolbar
-            toolbar = NavigationToolbar2Tk(canvas,
-                                           window)
-            toolbar.update()
-            # placing the toolbar on the Tkinter window
-            canvas.get_tk_widget().pack()
+        def plot_bar():
+            app.bot.graph_csv.plot_data_bar()
+
+        def plot_scatter():
+            app.bot.graph_csv.plot_data_scatter()

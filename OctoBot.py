@@ -66,19 +66,19 @@ class TrafficBot:
 
         # line finder object
         self.line_finder = LineFinder(input_file)
-        self.line = [(210, 622), (1183, 582)]  # temp remove it
-        # self.line = []
+        # self.line = [(210, 622), (1183, 582)]  # temp remove it
+        self.line = []
         self.total = self.video_frame_checker()
 
         # Graph object
-        graph_csv = GraphCSV()
+        self.graph_csv = GraphCSV()
 
     def clear_output_directory(self):
         files = glob.glob(str(self.output) + "/*.png")
         for f in files:
             os.remove(f)
 
-    def set_line(self, line):
+    def set_line(self):
         """
         set the intersection line or area of interest.
         """
@@ -135,7 +135,7 @@ class TrafficBot:
         print(self.input)
 
     def run_bot(self):
-        # self.set_line()
+        self.set_line()
         tracker = Sort()
         counter = 0
         while True:
