@@ -22,4 +22,16 @@ pressing start will switch to the result page
 print frames in gui
 
 logic in main
+
+
+FLOW:
+
+disable start button
+input everything in the gui
+check if required fields are filled
+if true, enable start button
+on-start button click hide tkinter window
+display result page 
+create octobot instance
+after run bot, un-hide tkinter window
 """
