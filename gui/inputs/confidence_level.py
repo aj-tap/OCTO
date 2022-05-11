@@ -1,24 +1,45 @@
-"""
-This class is for widgets and functionalities
-that are related to the minimum confidence level
-we will accept a container in the constructor to
-render this widget into.
-
-We will access the min_confidence_lvl in traffic_bot
-by accessing its instance from the parent_container
-(self.container.bot)
-"""
-
 from tkinter.ttk import Label, OptionMenu
 
 from gui.inputs.abstract.level import Level
 
 
 class ConfidenceLevel(Level):
+    """
+    This class is for widgets and functionalities
+    that are related to the input of the minimum confidence
+    level.
+
+    ...
+    Methods
+    --------
+    render_widgets(r)
+        Renders the widgets related to the input of minimum confidence
+        level such as the OptionMenu.
+    set_new_level(new_lvl)
+        Accesses the bot property from parent_container to use the
+        setter method defined in the backend to set the desired
+        minimum confidence level.
+    """
+
     def __init__(self, parent_container):
+        """
+        Parameter
+        -------
+        parent_container : Frame
+            Where we will render our widgets into. Also, so we can access
+            the bot property.
+        """
+
         super().__init__(parent_container)
 
     def render_widgets(self, r):
+        """
+        Parameter
+        -------
+        r : int
+            An integer to specify the row where we will render the widget.
+        """
+
         Label(self.parent_container, text="Min confidence % : ") \
             .grid(sticky='w', row=r, column=1)
 
@@ -28,4 +49,11 @@ class ConfidenceLevel(Level):
             .grid(sticky='w', row=r, column=2)
 
     def set_new_level(self, new_lvl):
+        """
+        Parameter
+        -------
+        new_lvl : int
+            An integer to specify the desired minimum confidence level.
+        """
+
         self.parent_container.bot.set_confidence_lvl(new_lvl * .01)

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/traffic-bot-counter.iml" filepath="$PROJECT_DIR$/.idea/traffic-bot-counter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/OCTO.iml" filepath="$PROJECT_DIR$/.idea/OCTO.iml" />
     </modules>
   </component>
 </project>
