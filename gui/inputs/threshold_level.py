@@ -54,4 +54,4 @@ class ThresholdLevel(Level):
             An integer to specify the desired threshold level.
         """
 
-        self.parent_container.bot.set_threshold(new_lvl * .01)
+        self.parent_container.threshold = new_lvl * .01

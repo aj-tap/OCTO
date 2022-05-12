@@ -1,4 +1,4 @@
-from tkinter import Frame
+from tkinter import Frame, NORMAL, DISABLED
 from tkinter.ttk import Button
 
 from gui.inputs.confidence_level import ConfidenceLevel
@@ -19,9 +19,11 @@ class Menu(Frame):
     render_widgets()
         Renders the rest of the necessary widgets needed for the
         application.
+    check()
+        Checks if required parameters are fulfilled.
     """
 
-    def __init__(self, app, main_container, next_page):
+    def __init__(self, app, main_container):
         """
         Parameters
         -------
@@ -32,19 +34,24 @@ class Menu(Frame):
             the threshold, confidence paths, and intersection line.
         main_container : Frame
             This is where the Menu page will be rendered into.
-        next_page : Any
-            This is the next page to be raised, for our purposes
-            we will raise the Result page.
         """
 
         super().__init__(main_container)
 
+        self.input_path = None
+        self.output_dir = None
+        self.confidence = .5
+        self.threshold = .4
+        # self.is_intersection = None
+
         self.bot = app.bot
         self.render_widgets()
 
-        Button(self, text="Start",
-               command=lambda: app.start_btn())\
-            .grid(row=5, column=1, ipadx=15)
+        self.start_btn = Button(self, text="Start",
+                                command=lambda: app.on_click_start_btn())
+        self.start_btn.grid(row=5, column=1, ipadx=15)
+
+        self.start_btn.configure(state=DISABLED)
 
         self.grid(row=0, column=0, sticky='nsew')
 
@@ -62,3 +69,8 @@ class Menu(Frame):
         ConfidenceLevel(self).render_widgets(3)
         ThresholdLevel(self).render_widgets(3)
         IntersectionLine(self).render_widgets(4)
+
+    def check(self):
+        if self.input_path and self.output_dir \
+                and self.confidence and self.threshold:
+            self.start_btn.configure(state=NORMAL)

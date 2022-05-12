@@ -52,9 +52,16 @@ class FilePath(Path):
             .grid(sticky='w', row=r, column=5)
 
     def ask_for_path(self):
-        self.path = fd.askopenfilename(initialdir="/", title="Select file",
-                                                  filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
-        self.entry.delete(0, 'end')
+        buffer = fd.askopenfilename(initialdir="/", title="Select file",
+                                    filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
+        if buffer:
+            self.path = buffer
+
+        if self.path:
+            self.entry.delete(0, 'end')
+
         self.entry.insert(0, self.path)
 
-        self.parent_container.bot.set_input_file(self.path)
+        self.parent_container.input_path = self.path
+
+        self.parent_container.check()

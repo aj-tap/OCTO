@@ -52,8 +52,14 @@ class DirectoryPath(Path):
             .grid(sticky='w', row=r, column=5)
 
     def ask_for_path(self):
-        self.entry.delete(0, 'end')
-        self.path = fd.askdirectory()
+        buffer = fd.askdirectory()
+
+        if buffer:
+            self.path = buffer
+
+        if self.path:
+            self.entry.delete(0, 'end')
         self.entry.insert(0, self.path)
 
-        self.parent_container.bot.set_output_dir(self.path)
+        self.parent_container.output_dir = self.path
+        self.parent_container.check()

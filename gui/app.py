@@ -1,6 +1,7 @@
 from tkinter import Tk, Frame
 from gui.pages.menu import Menu
 from gui.pages.result import Result
+# from threading import Thread
 
 
 class App(Tk):
@@ -23,7 +24,7 @@ class App(Tk):
         Raises the specified frame (or page) from the stack.
     """
 
-    def __init__(self, bot):
+    def __init__(self, bot=None):
         """
         Parameters
         -------
@@ -43,8 +44,6 @@ class App(Tk):
         self.main_container.grid(row=0, column=0, padx=15, pady=15)
         self.load_pages(self.main_container)
 
-        self.mainloop()
-
     def configure_window(self):
         self.resizable(False, False)
         self.wm_iconbitmap('assets/traffic.ico')
@@ -58,12 +57,17 @@ class App(Tk):
             This is the container where the Menu and Result frames (or pages) will be rendered into.
         """
 
-        self.frame_storage[Menu] = Menu(self, main_container, Result)
-        self.frame_storage[Result] = Result(self, main_container, Menu)
+        self.frame_storage[Menu] = Menu(self, main_container)
+        self.frame_storage[Result] = Result(self, main_container)
         self.show_frame(Menu)
 
-    def start_btn(self):
-        self.bot.run_bot()
+    def on_click_start_btn(self):
+        # Thread(target=self.bot.run_bot()).start()
+        print(self.frame_storage[Menu].output_dir)
+        print(self.frame_storage[Menu].input_path)
+        print(self.frame_storage[Menu].confidence)
+        print(self.frame_storage[Menu].threshold)
+        self.show_frame(Result)
 
     def show_frame(self, page):
         """
@@ -75,6 +79,3 @@ class App(Tk):
 
         frame = self.frame_storage[page]
         frame.tkraise()
-
-
-

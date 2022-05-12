@@ -55,5 +55,4 @@ class ConfidenceLevel(Level):
         new_lvl : int
             An integer to specify the desired minimum confidence level.
         """
-
-        self.parent_container.bot.set_confidence_lvl(new_lvl * .01)
+        self.parent_container.confidence = new_lvl * .01
