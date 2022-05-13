@@ -16,8 +16,8 @@ from Graph import *
 
 class TrafficBot:
 
-    def __init__(self, yolo_directory="yolo-coco-V4", input_file=None, output=None, confidence_level=0.5,
-                 threshold=0.3):
+    def __init__(self, input_file=None, output=None, intersection=None, confidence_level=0.5,
+                 threshold=0.3, yolo_directory="yolo-coco-V4"):
         # Writer object
         self.memory = {}
         self.writer_csv = WriterCsv()
@@ -64,10 +64,8 @@ class TrafficBot:
         self.frameIndex = 0
         print("[INFO] video input was successfully loaded")
 
-        # line finder object
-        self.line_finder = LineFinder(input_file)
         # self.line = [(210, 622), (1183, 582)]  # temp remove it
-        self.line = []
+        self.line = intersection
         self.total = self.video_frame_checker()
 
         # Graph object
@@ -77,12 +75,6 @@ class TrafficBot:
         files = glob.glob(str(self.output) + "/*.png")
         for f in files:
             os.remove(f)
-
-    def set_line(self):
-        """
-        set the intersection line or area of interest.
-        """
-        self.line = self.line_finder.get_line()
 
     def intersect(self, A, B, C, D):
         """
@@ -118,24 +110,8 @@ class TrafficBot:
         colors = np.random.randint(0, 255, size=(200, 3), dtype="uint8")
         return colors
 
-    def set_threshold(self, new_threshold):
-        self.threshold = new_threshold
-        print(self.threshold)
-
-    def set_confidence_lvl(self, new_confidence):
-        self.confidence_level = new_confidence
-        print(self.confidence_level)
-
-    def set_output_dir(self, new_output):
-        self.output = new_output
-        print(self.output)
-
-    def set_input_file(self, new_input_file):
-        self.input = new_input_file
-        print(self.input)
-
     def run_bot(self):
-        self.set_line()
+        print("BOT RUNNING...")
         tracker = Sort()
         counter = 0
         while True:

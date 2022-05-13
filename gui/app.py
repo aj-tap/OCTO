@@ -1,6 +1,10 @@
+from threading import Thread
 from tkinter import Tk, Frame
 from gui.pages.menu import Menu
 from gui.pages.result import Result
+from OctoBot import TrafficBot
+
+
 # from threading import Thread
 
 
@@ -24,25 +28,32 @@ class App(Tk):
         Raises the specified frame (or page) from the stack.
     """
 
-    def __init__(self, bot=None):
-        """
-        Parameters
-        -------
-        bot : bot
-            The object counter / traffic bot instance. For the frames (or pages)
-             to access the getters/setters of the bot (used for threshold, confidence,
-             path, intersection line).
-        """
-
+    def __init__(self):
         super().__init__()
         self.configure_window()
 
         self.frame_storage = {}
-        self.bot = bot
         self.main_container = Frame(self)
 
         self.main_container.grid(row=0, column=0, padx=15, pady=15)
         self.load_pages(self.main_container)
+
+    def start_process(self):
+        self.show_frame(Result)
+
+        menu = self.frame_storage[Menu]
+
+        bot = TrafficBot(menu.input_path, menu.output_dir,
+                         menu.intersection, menu.confidence,
+                         menu.threshold)
+
+        print(self.frame_storage[Menu].output_dir)
+        print(self.frame_storage[Menu].input_path)
+        print(self.frame_storage[Menu].confidence)
+        print(self.frame_storage[Menu].threshold)
+        print(self.frame_storage[Menu].intersection)
+
+        bot.run_bot()
 
     def configure_window(self):
         self.resizable(False, False)
@@ -58,16 +69,8 @@ class App(Tk):
         """
 
         self.frame_storage[Menu] = Menu(self, main_container)
-        self.frame_storage[Result] = Result(self, main_container)
+        self.frame_storage[Result] = Result(main_container)
         self.show_frame(Menu)
-
-    def on_click_start_btn(self):
-        # Thread(target=self.bot.run_bot()).start()
-        print(self.frame_storage[Menu].output_dir)
-        print(self.frame_storage[Menu].input_path)
-        print(self.frame_storage[Menu].confidence)
-        print(self.frame_storage[Menu].threshold)
-        self.show_frame(Result)
 
     def show_frame(self, page):
         """
