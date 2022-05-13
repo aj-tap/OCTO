@@ -17,7 +17,7 @@ from Graph import *
 class TrafficBot:
 
     def __init__(self, yolo_directory="yolo-coco-V4", input_file=None, output=None, confidence_level=0.5,
-                 threshold=0.3):
+                 threshold=0.3, intersection_line):
         # Writer object
         self.memory = {}
         self.writer_csv = WriterCsv()
@@ -65,13 +65,13 @@ class TrafficBot:
         print("[INFO] video input was successfully loaded")
 
         # line finder object
-        self.line_finder = LineFinder(input_file)
+        # self.line_finder = LineFinder(input_file)
         # self.line = [(210, 622), (1183, 582)]  # temp remove it
-        self.line = []
+        self.line = intersection_line
         self.total = self.video_frame_checker()
 
         # Graph object
-        self.graph_csv = GraphCSV()
+        #self.graph_csv = GraphCSV()
 
     def clear_output_directory(self):
         files = glob.glob(str(self.output) + "/*.png")
