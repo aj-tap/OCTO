@@ -8,8 +8,8 @@ import os
 import glob
 from sort import *
 from WriterCsv import *
-from LineFinder import *
-from Graph import *
+# from LineFinder import *
+# from Graph import *
 
 
 # import CoodFinder
@@ -69,7 +69,7 @@ class TrafficBot:
         self.total = self.video_frame_checker()
 
         # Graph object
-        self.graph_csv = GraphCSV()
+        #self.graph_csv = GraphCSV()
 
     def clear_output_directory(self):
         files = glob.glob(str(self.output) + "/*.png")
