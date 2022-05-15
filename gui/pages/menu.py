@@ -27,11 +27,6 @@ class Menu(Frame):
         """
         Parameters
         -------
-        app : App
-            The App class itself, in order for us to access
-            the properties of the bot which is also a property of App
-            which we will then need to set the necessary data for
-            the threshold, confidence paths, and intersection line.
         main_container : Frame
             This is where the Menu page will be rendered into.
         """
@@ -42,13 +37,14 @@ class Menu(Frame):
         self.output_dir = None
         self.confidence = .5
         self.threshold = .4
-        # self.is_intersection = None
+        self.intersection = None
 
-        self.bot = app.bot
+        self.intersection_line = IntersectionLine(self)
+
         self.render_widgets()
 
         self.start_btn = Button(self, text="Start",
-                                command=lambda: app.on_click_start_btn())
+                                command=lambda: app.start_process())
         self.start_btn.grid(row=5, column=1, ipadx=15)
 
         self.start_btn.configure(state=DISABLED)
@@ -68,9 +64,14 @@ class Menu(Frame):
         DirectoryPath(self).render_widgets(2)
         ConfidenceLevel(self).render_widgets(3)
         ThresholdLevel(self).render_widgets(3)
-        IntersectionLine(self).render_widgets(4)
+        self.intersection_line.render_widgets(4)
 
     def check(self):
+        if self.input_path:
+            self.intersection_line.draw.configure(state=NORMAL)
         if self.input_path and self.output_dir \
-                and self.confidence and self.threshold:
+                and self.confidence and self.threshold\
+                and self.intersection:
             self.start_btn.configure(state=NORMAL)
+        else:
+            self.start_btn.configure(state=DISABLED)

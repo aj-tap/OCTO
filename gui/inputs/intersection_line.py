@@ -1,4 +1,6 @@
+from tkinter import DISABLED, NORMAL
 from tkinter.ttk import Label, Button
+from LineFinder import LineFinder
 
 
 class IntersectionLine:
@@ -29,6 +31,7 @@ class IntersectionLine:
         """
 
         self.parent_container = parent_container
+        self.draw = Button(self.parent_container, text="Draw", command=self.draw_intersection_line)
 
     def render_widgets(self, r):
         """
@@ -41,8 +44,11 @@ class IntersectionLine:
         Label(self.parent_container, text="Intersection Line: ") \
             .grid(sticky='w', row=r, column=1)
 
-        Button(self.parent_container, text="Draw", command=self.draw_intersection_line) \
-            .grid(sticky='w', row=r, column=2)
+        self.draw.grid(sticky='w', row=r, column=2)
+        self.draw.configure(state=DISABLED)
 
     def draw_intersection_line(self):
-        self.parent_container.bot.line_finder.pop_window()
+        line = LineFinder(self.parent_container.input_path)
+        line.pop_window()
+        self.parent_container.intersection = line.get_line()
+        self.parent_container.check()
