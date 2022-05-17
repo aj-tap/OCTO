@@ -24,11 +24,6 @@ class Result(Frame):
         super().__init__(main_container)
 
         # app.bot.graph_csv.get_data_arr()
-        graph = GraphCSV()
-        graph.get_data_arr()
-
-        Button(self, text="Bar Graph", command=lambda: graph.plot_data_bar()).pack()
-        Button(self, text="Scatter Plot", command=lambda: graph.plot_data_scatter()).pack()
 
         Label(self, text="By: Aldwin Tapican and Marjolo Mabuti").pack()
 
