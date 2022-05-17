@@ -55,8 +55,8 @@ class Menu(Frame):
         graph = GraphCSV()
         graph.get_data_arr()
 
-        Button(self, text="Bar Graph", command=lambda: graph.plot_data_bar()).grid(row=6, column=1)
-        Button(self, text="Scatter Plot", command=lambda: graph.plot_data_scatter()).grid(row=7, column=1)
+        Button(self, text="Bar Graph", command=lambda: graph.plot_data_bar()).grid(row=5, column=4, sticky='nsew')
+        Button(self, text="Scatter Plot", command=lambda: graph.plot_data_scatter()).grid(row=5, column=5, sticky='nsew')
 
     def render_widgets(self):
         """
