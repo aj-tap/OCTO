@@ -1,4 +1,5 @@
 from threading import Thread
+from tkinter.ttk import Style
 from tkinter import Tk, Frame
 from gui.pages.menu import Menu
 from gui.pages.result import Result
@@ -31,7 +32,6 @@ class App(Tk):
     def __init__(self):
         super().__init__()
         self.configure_window()
-
         self.frame_storage = {}
         self.main_container = Frame(self)
 

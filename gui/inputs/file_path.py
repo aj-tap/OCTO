@@ -49,7 +49,7 @@ class FilePath(Path):
         self.entry.grid(sticky='w', ipadx=80, row=r, column=2, columnspan=3)
 
         Button(self.parent_container, text="Choose file", command=lambda: self.ask_for_path()) \
-            .grid(sticky='w', row=r, column=5)
+            .grid(sticky='nsew', row=r, column=5)
 
     def ask_for_path(self):
         buffer = fd.askopenfilename(initialdir="/", title="Select file",
