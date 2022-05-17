@@ -39,9 +39,11 @@ class App(Tk):
         self.load_pages(self.main_container)
 
     def start_process(self):
-        self.show_frame(Result)
+        # self.show_frame(Result)
 
         menu = self.frame_storage[Menu]
+
+        self.withdraw()
 
         bot = TrafficBot(menu.input_path, menu.output_dir,
                          menu.intersection, menu.confidence,
@@ -54,6 +56,8 @@ class App(Tk):
         print(self.frame_storage[Menu].intersection)
 
         bot.run_bot()
+
+        # self.deiconify()
 
     def configure_window(self):
         self.resizable(False, False)

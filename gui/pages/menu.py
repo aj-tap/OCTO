@@ -1,6 +1,7 @@
 from tkinter import Frame, NORMAL, DISABLED
 from tkinter.ttk import Button
 
+from Graph import GraphCSV
 from gui.inputs.confidence_level import ConfidenceLevel
 from gui.inputs.directory_path import DirectoryPath
 from gui.inputs.file_path import FilePath
@@ -50,6 +51,12 @@ class Menu(Frame):
         self.start_btn.configure(state=DISABLED)
 
         self.grid(row=0, column=0, sticky='nsew')
+
+        graph = GraphCSV()
+        graph.get_data_arr()
+
+        Button(self, text="Bar Graph", command=lambda: graph.plot_data_bar()).grid(row=6, column=1)
+        Button(self, text="Scatter Plot", command=lambda: graph.plot_data_scatter()).grid(row=7, column=1)
 
     def render_widgets(self):
         """
