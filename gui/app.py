@@ -1,4 +1,6 @@
 from tkinter import Tk, Frame
+
+from gui.graph_buttons import GraphButtons
 from gui.menu import Menu
 from OctoBot import TrafficBot
 
@@ -38,6 +40,8 @@ class App(Tk):
                          self.menu.threshold)
 
         bot.run_bot()
+
+        GraphButtons(self.menu).render_widgets(5)
 
         self.deiconify()
 

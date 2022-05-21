@@ -1,7 +1,6 @@
 from tkinter import Frame, NORMAL, DISABLED
 from tkinter.ttk import Button
 
-from gui.graph_buttons import GraphButtons
 from gui.inputs.confidence_level import ConfidenceLevel
 from gui.inputs.directory_path import DirectoryPath
 from gui.inputs.file_path import FilePath
@@ -39,7 +38,6 @@ class Menu(Frame):
         self.confidence = .5
         self.threshold = .4
         self.intersection = None
-
         self.intersection_line = IntersectionLine(self)
 
         self.render_widgets()
@@ -51,7 +49,6 @@ class Menu(Frame):
         self.start_btn.configure(state=DISABLED)
 
         self.grid(row=0, column=0, sticky='nsew')
-
 
     def render_widgets(self):
         """
@@ -67,13 +64,12 @@ class Menu(Frame):
         ConfidenceLevel(self).render_widgets(3)
         ThresholdLevel(self).render_widgets(3)
         self.intersection_line.render_widgets(4)
-        GraphButtons(self).render_widgets(5)
 
     def check(self):
         if self.input_path:
             self.intersection_line.draw.configure(state=NORMAL)
         if self.input_path and self.output_dir \
-                and self.confidence and self.threshold\
+                and self.confidence and self.threshold \
                 and self.intersection:
             self.start_btn.configure(state=NORMAL)
         else:

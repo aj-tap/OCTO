@@ -53,7 +53,10 @@ class FilePath(Path):
 
     def ask_for_path(self):
         buffer = fd.askopenfilename(initialdir="/", title="Select file",
-                                    filetypes=(("mp4 Files", "*.mp4"), ("All Files", "*.*")))
+                                    filetypes=(("mp4 Files", "*.mp4"),
+                                               ("mkv Files", "*.mkv"),
+                                               ("mov Files", "*.mov"),
+                                               ("All Files", "*.*")))
         if buffer:
             self.path = buffer
 
