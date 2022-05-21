@@ -34,8 +34,6 @@ class App(Tk):
         self.load_pages(self.main_container)
 
     def start_process(self):
-        # self.show_frame(Result)
-
         menu = self.frame_storage[Menu]
 
         self.withdraw()
@@ -52,7 +50,7 @@ class App(Tk):
 
         bot.run_bot()
 
-        # self.deiconify()
+        self.deiconify()
 
     def configure_window(self):
         self.resizable(False, False)
