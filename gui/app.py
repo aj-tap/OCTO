@@ -4,9 +4,6 @@ from gui.pages.result import Result
 from OctoBot import TrafficBot
 
 
-# from threading import Thread
-
-
 class App(Tk):
     """
     A class to create the instance of the application itself. Inherits from the Tk object
