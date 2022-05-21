@@ -1,5 +1,3 @@
-from threading import Thread
-from tkinter.ttk import Style
 from tkinter import Tk, Frame
 from gui.pages.menu import Menu
 from gui.pages.result import Result
