@@ -286,5 +286,5 @@ class TrafficBot:
         # release the file pointers
 
         print("[INFO] cleaning up...")
-        writer.release()
-        vs.release()
+        self.writer.release()
+        self.vs.release()
