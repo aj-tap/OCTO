@@ -17,4 +17,4 @@ python main.py
 ![image](https://user-images.githubusercontent.com/72655919/169628919-a0a5b99c-85ce-49d7-9321-6292690cc69d.png)
 ![image](https://user-images.githubusercontent.com/72655919/169628927-eb7a4f61-86fa-4a01-b5e6-90efb68e3434.png)
 ![image](https://user-images.githubusercontent.com/72655919/169628934-1207fb67-07a5-4c8f-a895-3d84335a57c2.png)
-![uml for OOP (1)](https://user-images.githubusercontent.com/72655919/169628872-0adef0c6-1544-4fd6-8589-6e634db69675.png)
+![uml for OOP (4)](https://user-images.githubusercontent.com/72655919/169630914-11eeaab2-dbd3-4322-84f9-5b5cd1488330.png)
