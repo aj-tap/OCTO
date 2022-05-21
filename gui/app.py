@@ -1,12 +1,7 @@
-from threading import Thread
-from tkinter.ttk import Style
 from tkinter import Tk, Frame
 from gui.pages.menu import Menu
 from gui.pages.result import Result
 from OctoBot import TrafficBot
-
-
-# from threading import Thread
 
 
 class App(Tk):
