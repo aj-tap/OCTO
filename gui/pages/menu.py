@@ -1,7 +1,7 @@
 from tkinter import Frame, NORMAL, DISABLED
 from tkinter.ttk import Button
 
-from gui.graph import GraphButtons
+from gui.graph_buttons import GraphButtons
 from gui.inputs.confidence_level import ConfidenceLevel
 from gui.inputs.directory_path import DirectoryPath
 from gui.inputs.file_path import FilePath
