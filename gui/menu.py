@@ -1,6 +1,7 @@
 from tkinter import Frame, NORMAL, DISABLED
 from tkinter.ttk import Button
 
+from gui.graph_buttons import GraphButtons
 from gui.inputs.confidence_level import ConfidenceLevel
 from gui.inputs.directory_path import DirectoryPath
 from gui.inputs.file_path import FilePath
@@ -64,6 +65,7 @@ class Menu(Frame):
         ConfidenceLevel(self).render_widgets(3)
         ThresholdLevel(self).render_widgets(3)
         self.intersection_line.render_widgets(4)
+        GraphButtons(self).render_widgets(5)
 
     def check(self):
         if self.input_path:
