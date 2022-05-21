@@ -48,4 +48,4 @@ class App(Tk):
     def configure_window(self):
         self.resizable(False, False)
         self.wm_iconbitmap('assets/traffic.ico')
-        self.title('OCTO bot')
+        self.title('OCTO-BOT')
