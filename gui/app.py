@@ -1,6 +1,5 @@
 from tkinter import Tk, Frame
-from gui.pages.menu import Menu
-from gui.pages.result import Result
+from gui.menu import Menu
 from OctoBot import TrafficBot
 
 
@@ -66,7 +65,6 @@ class App(Tk):
         """
 
         self.frame_storage[Menu] = Menu(self, main_container)
-        self.frame_storage[Result] = Result(main_container)
         self.show_frame(Menu)
 
     def show_frame(self, page):
