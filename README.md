@@ -1,20 +1,36 @@
-# Under-Construction
-## Object Counting Traffic Bot  
+# OCTO_BOT (Object Counting Traffic Bot)
 ``Powered by yolo-v4 and Deep sort``
 
-![](https://github.com/aj-tap/OCTO/blob/main/assets/octo.gif)
 
-## Setup 
-> Linux 
-#### setup virtual enviroment then activate it
+---
+![](https://github.com/aj-tap/OCTO/blob/main/assets/octo.gif)
+---
+## Installation
 ```
-pip install install - requirements.txt
+# Clone this repository 
+git clone https://github.com/aj-tap/OCTO
+# Download yolov3/v4 weights 
+wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights
+# Create a virtual environment 
+python3 -m venv env 
+# Activate virtual environment 
+source env/bin/activate
+# Install lib 
+pip install -r requirements.txt
+# launch the app 
 python main.py 
 ```
+## App Demo 
+![](https://github.com/aj-tap/OCTO/blob/main/assets/1.gif)
+![](https://github.com/aj-tap/OCTO/blob/main/assets/2.gif)
+![](https://github.com/aj-tap/OCTO/blob/main/assets/3.gif)
+![](https://github.com/aj-tap/OCTO/blob/main/assets/4.gif)
 
-### App Screenshots 
-![image](https://user-images.githubusercontent.com/72655919/169628896-69d1b9cc-7ed8-41b2-aea7-ebd83f8fcf19.png)
-![image](https://user-images.githubusercontent.com/72655919/169628919-a0a5b99c-85ce-49d7-9321-6292690cc69d.png)
-![image](https://user-images.githubusercontent.com/72655919/169628927-eb7a4f61-86fa-4a01-b5e6-90efb68e3434.png)
-![image](https://user-images.githubusercontent.com/72655919/169628934-1207fb67-07a5-4c8f-a895-3d84335a57c2.png)
-![uml for OOP (4)](https://user-images.githubusercontent.com/72655919/169630914-11eeaab2-dbd3-4322-84f9-5b5cd1488330.png)
+---
+
+Note: It is a two-week project that is part of my college requirements.
+
+### Credits 
+* https://github.com/axojolotl 
+* https://github.com/pjreddie/darknet
+* https://github.com/nwojke/deep_sort
