@@ -28,7 +28,7 @@ python main.py
 
 ---
 
-Note: It is a two-week project that is part of my college requirements.
+Note: It is a two-week project that is part of college requirements.
 
 ### Credits 
 * https://github.com/axojolotl 
