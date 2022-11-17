@@ -31,6 +31,6 @@ python main.py
 Note: It is a two-week project that is part of college requirements.
 
 ### Credits 
-* https://github.com/microjoule 
+* https://github.com/mlmabuti
 * https://github.com/pjreddie/darknet
 * https://github.com/nwojke/deep_sort
